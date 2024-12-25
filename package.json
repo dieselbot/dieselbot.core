@@ -1,0 +1,22 @@
+{
+  "name": "efshelper.core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/efshelper/efshelper.core.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/efshelper/efshelper.core/issues"
+  },
+  "homepage": "https://github.com/efshelper/efshelper.core#readme",
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  }
+}
