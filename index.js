@@ -1,21 +1,21 @@
-const read_fuel_solution = require('./common/read_fs');
+const FuelSolution = require('./domain/fuel.solution');
 const SearchService = require('./services/search');
+const SearchUseCase = require('./application/search.usecase');
 
-async function search(fuel_solution){
-    let search_phrases = read_fuel_solution(fuel_solution)
-    const searchService = new SearchService();
-    return await searchService.findPlaces(search_phrases);
+async function search(fuel_solution_text) {
+    const search_usecase = new SearchUseCase();
+    search_usecase.fuel_solution = new FuelSolution(fuel_solution_text);
+    search_usecase.search_service = new SearchService();
+    return await search_usecase.execute();
 }
 
-const fs = `LOVES TRAVEL ST  I 81        QTY: 52  
-HAGERSTOWN      MD EX: 10A            
-LOVES #871 TRAV  I 85        QTY: FILL
-PIEDMONT        SC EX: 32
-
-** FUEL SOLUTION **     LOAD#: 2739417
-PILOT TRAVEL CE  I 74        QTY: FILL
-BLOOMINGTON     IL EX: 131            
-PILOT TRAVEL CE  I 80        QTY: FILL
-AUSTINTOWN      OH EX: 223`;
+const fs = `TULSA TERMINAL   I 44        QTY: FILL
+TULSA           OK EX: 238
+LOVES TRAVEL ST  I 44        QTY: FILL
+BIG CABIN       OK EX: 283 
+LAREDO TERMINAL  I 35        QTY: FILL
+LAREDO          TX EX: 7
+PILOT #7976/Pil  I 77        QTY: 93  
+TROUTMAN        NC EX: 42  `;
 
 search(fs).then(console.log);
