@@ -1,4 +1,23 @@
-const PlacesAPI = require('../infrastructure/places_api.js')
+const PlacesAPI = require('../infrastructure/places.api.js')
+
+class SearchService { 
+    _api = new PlacesAPI();
+    async findPlace(search_phrase){
+        if(!search_phrase) return;
+        const mtla = isMTLA(search_phrase);
+        if(mtla) return Promise.resolve(mtla);
+        const response = await this._api.find_place(search_phrase);
+        return _format_place_response(response);
+    }
+    async findPlaces(search_phrases){
+        if (!search_phrases || ! search_phrases.length) return {}
+
+        return await Promise.all(search_phrases.map(phrase => {
+            return this.findPlace(phrase)
+        }))
+    }
+}
+
 
 function _format_place_response(place_response){
     const response = { name: '', address: '' };
@@ -9,19 +28,20 @@ function _format_place_response(place_response){
     return response;
 }
 
-class SearchService { 
-    _api = new PlacesAPI();
-    async findPlace(search_phrase){
-        if(!search_phrase) return;
-        const response = await this._api.find_place(search_phrase);
-        return _format_place_response(response);
-    }
-    async findPlaces(search_phrases){
-        if (!search_phrases || ! search_phrases.length) return {}
-
-        return await Promise.all(search_phrases.map(phrase => {
-            return this.findPlace(phrase)
-        }))
+function isMTLA(search_phrase){
+    switch (true) {
+        case /laredo terminal/i.test(search_phrase):
+            return {
+                name: 'Melton Truck Lines Inc. -Laredo Terminal',
+                address: '8720, 8618 Las Cruces Dr, Laredo, TX 78045'
+            };
+        case /tulsa terminal/i.test(search_phrase):
+            return {
+                name: 'Melton Truck Lines Inc',
+                address: '808 N 161st E Ave, Tulsa, OK 74116'
+            };
+        default:
+            return false;
     }
 }
 
