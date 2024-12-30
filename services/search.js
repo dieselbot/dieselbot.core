@@ -23,7 +23,7 @@ function _format_place_response(place_response){
     const response = { name: '', address: '' };
     if(!place_response.places) return response;
     const place = place_response.places ? place_response.places[0] : {};
-    response.name = place.displayName.text;
+    response.display_name = place.displayName.text;
     response.address = place.formattedAddress;
     return response;
 }
@@ -32,12 +32,12 @@ function isMTLA(search_phrase){
     switch (true) {
         case /laredo terminal/i.test(search_phrase):
             return {
-                name: 'Melton Truck Lines Inc. -Laredo Terminal',
+                display_name: 'Melton Truck Lines Inc. -Laredo Terminal',
                 address: '8720, 8618 Las Cruces Dr, Laredo, TX 78045'
             };
         case /tulsa terminal/i.test(search_phrase):
             return {
-                name: 'Melton Truck Lines Inc',
+                display_name: 'Melton Truck Lines Inc',
                 address: '808 N 161st E Ave, Tulsa, OK 74116'
             };
         default:
