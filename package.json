@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/efshelper/efshelper.core#readme",
   "dependencies": {
-    "node-fetch": "^2.7.0"
+    "node-fetch": "^2.7.0",
+    "redis": "^4.7.0"
   }
 }
