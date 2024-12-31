@@ -2,8 +2,7 @@ const FuelSolution = require('./domain/fuel.solution');
 const SearchService = require('./services/search');
 const SearchUseCase = require('./application/search.usecase');
 const { FUEL_STOP_FOUND_CHANNEL } = require('./common/constants.json');
-
-const { createClient } = require('redis');
+const getRedisClient = require('./common/getRedisClient');
 
 async function search(fuel_solution_text) {
     const search_usecase = new SearchUseCase();
@@ -11,11 +10,7 @@ async function search(fuel_solution_text) {
     search_usecase.search_service = new SearchService();
     const results = await search_usecase.execute();
     
-    const client = createClient({
-        url: process.env.REDIS_URL
-    });
-    
-    await client.connect();
+    const client = await getRedisClient();
     
     await client.publish(FUEL_STOP_FOUND_CHANNEL, JSON.stringify(results));
     
