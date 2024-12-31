@@ -1,3 +1,5 @@
 { 
-    "FUEL_STOP_FOUND_CHANNEL": "fuelstop.found"
+    "FUELSTOP": {
+        "FOUND": "fuelstop.found"
+    }
 }
