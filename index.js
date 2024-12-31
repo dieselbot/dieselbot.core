@@ -11,7 +11,9 @@ async function search(fuel_solution_text) {
     search_usecase.search_service = new SearchService();
     const results = await search_usecase.execute();
     
-    const client = createClient();
+    const client = createClient({
+        url: process.env.REDIS_URL
+    });
     
     await client.connect();
     
