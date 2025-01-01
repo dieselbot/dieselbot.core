@@ -1,5 +1,4 @@
-const fetch = require('node-fetch')
-const _google_api_key = process.env.GOOGLE_API_KEY;
+const fetch = require('node-fetch');
 
 class PlacesAPI { 
     async find_place(search_phrase){
@@ -7,7 +6,7 @@ class PlacesAPI {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Goog-Api-Key': _google_api_key,
+                'X-Goog-Api-Key': process.env.GOOGLE_API_KEY,
                 'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.priceLevel'
             },
             body: JSON.stringify({

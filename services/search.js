@@ -1,7 +1,9 @@
 const PlacesAPI = require('../infrastructure/places.api.js')
 
 class SearchService { 
-    _api = new PlacesAPI();
+    constructor(){
+        this._api = new PlacesAPI();
+    }
     async findPlace(search_phrase){
         if(!search_phrase) return;
         const mtla = isMTLA(search_phrase);
