@@ -1,5 +1,5 @@
-const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
-const { getFirestore, Timestamp, FieldValue, Filter } = require('firebase-admin/firestore');
+const { initializeApp, cert } = require('firebase-admin/app');
+const { getFirestore } = require('firebase-admin/firestore');
 
 const serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 
@@ -9,7 +9,7 @@ initializeApp({
 
 class FuelStopDB {
     constructor() {
-        this._db = getFirestore()
+        this.firestore = getFirestore()
     }
 }
 

@@ -1,4 +1,4 @@
-let FuelStop = require('./fuel.stop.js');
+const FuelStop = require('./fuel.stop.js');
 
 class FuelSolution {
     constructor(fuel_solution_text) {
