@@ -8,6 +8,7 @@ async function seedFuelStops() {
     const docRef = fuelStopDb._db.collection(FUELSTOPS);
 
     await docRef.add({
+        code: 'melton',
         display_name: 'Melton Truck Lines Inc',
         address: '808 N 161st E Ave, Tulsa, OK 74116',
         city: 'TULSA',
@@ -17,6 +18,7 @@ async function seedFuelStops() {
     })
 
     await docRef.add({
+        code: 'melton',
         display_name: 'Melton Truck Lines Inc. -Laredo Terminal',
         address: '8720, 8618 Las Cruces Dr, Laredo, TX 78045',
         city: 'LAREDO',
