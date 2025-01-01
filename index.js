@@ -1,8 +1,6 @@
 const FuelSolution = require('./domain/fuel.solution');
 const SearchService = require('./services/search');
 const SearchUseCase = require('./application/search.usecase');
-// const { FUELSTOP } = require('./common/constants.json');
-const getRedisClient = require('./common/getRedisClient');
 const FuelStopService = require('./services/fuelstop');
 
 async function search(fuel_solution_text) {
@@ -14,12 +12,6 @@ async function search(fuel_solution_text) {
     const service = new FuelStopService();
 
     service.post(results);
-    
-    // const client = await getRedisClient();
-    
-    // await client.publish(FUELSTOP.FOUND, JSON.stringify(results));
-
-    // await client.disconnect()
 
     return results;
 }
@@ -31,6 +23,6 @@ BIG CABIN       OK EX: 283
 LAREDO TERMINAL  I 35        QTY: FILL
 LAREDO          TX EX: 7
 PILOT #7976/Pil  I 77        QTY: 93  
-TROUTMAN        NC EX: 42  `;
+TROUTMAN        NC EX: 42`;
 
 search(fs).then(console.log);

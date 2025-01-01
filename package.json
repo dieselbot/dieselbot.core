@@ -18,7 +18,6 @@
   "homepage": "https://github.com/efshelper/efshelper.core#readme",
   "dependencies": {
     "firebase-admin": "^13.0.2",
-    "node-fetch": "^2.7.0",
-    "redis": "^4.7.0"
+    "node-fetch": "^2.7.0"
   }
 }
