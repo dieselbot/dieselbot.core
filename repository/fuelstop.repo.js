@@ -1,9 +1,7 @@
 const FuelStopDB = require("../infrastructure/fuelstop.db");
 
-class FuelStopRepo {
-    constructor() {
-        this._db = new FuelStopDB()
-    }
-}
+const _db = new FuelStopDB();
+
+class FuelStopRepo { }
 
 module.exports = FuelStopRepo;

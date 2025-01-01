@@ -1,14 +1,13 @@
 const PlacesAPI = require('../infrastructure/places.api.js')
 
-class SearchService { 
-    constructor(){
-        this._api = new PlacesAPI();
-    }
+const _api = new PlacesAPI();
+
+class SearchService {
     async findPlace(search_phrase){
         if(!search_phrase) return;
         const mtla = isMTLA(search_phrase);
         if(mtla) return Promise.resolve(mtla);
-        const response = await this._api.find_place(search_phrase);
+        const response = await _api.find_place(search_phrase);
         return _format_place_response(response);
     }
 }
