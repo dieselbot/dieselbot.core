@@ -2,6 +2,7 @@ class FuelStop {
     constructor(text_line_1, text_line_2) {
         this.line_1 = text_line_1;
         this.line_2 = text_line_2;
+        this.code = '';
         this.name = '';
         this.city = '';
         this.state = '';
@@ -23,7 +24,8 @@ class FuelStop {
 
         this.name = normalize.name(this.name);
         this.city = normalize.city(this.city);
-
+        this.code = get_code(this.name);
+        
         this.search_phrase = `${this.name} ${this.city} ${this.state} ${this.highway} exit ${this.exit}`;
     }
 }
@@ -47,6 +49,23 @@ const normalize = {
             return city.substring(0, n);
         }
         return city;
+    }
+}
+
+function get_code(name){
+    switch (true) {
+        case /love/gi.test(name):
+            return "loves";
+        case /pilot/gi.test(name):
+                return "pilot";
+        case /flying/gi.test(name):
+            return "flyingj";
+        case /petro/gi.test(name):
+            return "petro";
+        case /melton/gi.test(name):
+                return "melton";
+        default:
+            return null;
     }
 }
 
