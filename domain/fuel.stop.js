@@ -66,11 +66,11 @@ const normalize = {
 function get_code(name){
     switch (true) {
         case /love/gi.test(name):
-            return "loves";
+            return "love";
         case /pilot/gi.test(name):
                 return "pilot";
         case /flying/gi.test(name):
-            return "flyingj";
+            return "flying";
         case /petro/gi.test(name):
             return "petro";
         case /(tulsa terminal|laredo terminal)/gi.test(name):
