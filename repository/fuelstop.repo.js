@@ -29,7 +29,7 @@ class FuelStopRepo {
             return;
         }
 
-        return snapshot.docs.at(0).data();
+        return snapshot.docs[0].data();
     }
 
     async addOne(fuelstop) {
