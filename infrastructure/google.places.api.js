@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
-class PlacesAPI { 
-    async find_place(search_phrase){
+class GooglePlacesAPI { 
+    async textSearch(textQuery){
         return fetch('https://places.googleapis.com/v1/places:searchText',{
             method: 'POST',
             headers: {
@@ -10,7 +10,7 @@ class PlacesAPI {
                 'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.priceLevel'
             },
             body: JSON.stringify({
-                "textQuery" : search_phrase
+                "textQuery" : textQuery
             })
         }).then(res => {
             if(res.ok){
@@ -21,4 +21,4 @@ class PlacesAPI {
     }
 }
 
-module.exports = PlacesAPI
+module.exports = GooglePlacesAPI
