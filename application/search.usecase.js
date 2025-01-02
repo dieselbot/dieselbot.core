@@ -1,5 +1,6 @@
 const GooglePlacesService = require('../services/google.places');
 const FuelStopRepo = require('../repository/fuelstop.repo');
+const FuelStop = require('../domain/fuel.stop');
 
 class SearchUseCase {
     constructor() {
@@ -21,7 +22,11 @@ class SearchUseCase {
             if (!result) {
                 result = await this.places_service.findPlace(fuelStop.search_phrase);
                 result = { ...result, ...fuelStop.dto };
-                this.missing_fuel_stops.push(result);
+                if(FuelStop.isValid(result)){
+                    this.missing_fuel_stops.push(result);
+                } else {
+                    console.log(`no results found for query: "${fuelStop.search_phrase}"`, result);
+                }
             }
 
             results.push(result);
