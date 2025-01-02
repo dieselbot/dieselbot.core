@@ -1,8 +1,6 @@
 const FuelSolution = require('./domain/fuel.solution');
-
 const SearchUseCase = require('./application/search.usecase');
 const FuelStopService = require('./services/fuelstop');
-
 
 async function search(fuel_solution_text) {
     const search_usecase = new SearchUseCase();
@@ -10,7 +8,7 @@ async function search(fuel_solution_text) {
 
     const results = await search_usecase.execute();
 
-    if(search_usecase.missing_fuel_stops.length > 0){
+    if (search_usecase.missing_fuel_stops.length > 0) {
         const service = new FuelStopService();
         service.post(search_usecase.missing_fuel_stops);
     }
