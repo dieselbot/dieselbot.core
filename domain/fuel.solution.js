@@ -3,7 +3,7 @@ const FuelStop = require('./fuel.stop.js');
 class FuelSolution {
     constructor(fuel_solution_text) {
         this.text = fuel_solution_text;
-        this.fuel_stops = {};
+        this.fuel_stops = new Map();
     }
     read() {
         const _text = this.text;
@@ -14,8 +14,9 @@ class FuelSolution {
 
         _lines.forEach((line, i) => {
             if (/QTY:\s[A-Z|\d]+/.test(line)) {
-                this.fuel_stops[i] = new FuelStop(line, _lines[i + 1]);
-                this.fuel_stops[i].read();
+                const fuelStop = new FuelStop(line, _lines[i + 1]);
+                      fuelStop.read();
+                this.fuel_stops.set(i, fuelStop);
             }
         })
 
