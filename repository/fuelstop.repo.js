@@ -36,7 +36,7 @@ class FuelStopRepo {
 
         const { city, state, highway, exit } = fuelstop;
 
-        if (!city || !state || !highway || !exit) {
+        if (!city || !state || !highway) {
             console.log('abort insert - fuel stop has missing fields');
             return;
         }
