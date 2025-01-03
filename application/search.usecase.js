@@ -1,12 +1,17 @@
 const GooglePlacesService = require('../services/google.places');
 const FuelStopRepo = require('../repository/fuelstop.repo');
 const FuelStop = require('../domain/fuel.stop');
+const FuelSolution = require('../domain/fuel.solution');
 
 class SearchUseCase {
-    constructor() {
-        this.fuel_solution = null;
-        this.places_service = new GooglePlacesService();
-        this.fuel_stop_repo = new FuelStopRepo();
+    constructor(
+        fuel_solution = new FuelSolution(),
+        places_service = new GooglePlacesService(),
+        fuel_stop_repo = new FuelStopRepo()
+    ) {
+        this.fuel_solution = fuel_solution;
+        this.places_service = places_service;
+        this.fuel_stop_repo = fuel_stop_repo;
         this.missing_fuel_stops = [];
     }
     async execute() {
@@ -14,8 +19,7 @@ class SearchUseCase {
         const fuelStops = this.fuel_solution.fuel_stops;
         const results = [];
 
-        for (const id in fuelStops) {
-            const fuelStop = fuelStops[id];
+        for (const [key, fuelStop] of fuelStops) {
 
             let result = await this.fuel_stop_repo.findOne(fuelStop);
 
