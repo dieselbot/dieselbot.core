@@ -23,12 +23,12 @@ class FuelStopRepo {
                                    .get();
 
         if (snapshot.empty) {
-            console.log('no matching fuel stops.');
+            console.warn('no matching fuel stops.');
             return;
         }
 
         if (snapshot.size > 1) {
-            console.log('more than one fuel stop found.');
+            console.warn('more than one fuel stop found.');
             return;
         }
 
@@ -37,8 +37,10 @@ class FuelStopRepo {
 
     async addOne(fuelstop) {
 
-        if (!FuelStop.isValid(fuelstop)) {
-            console.log(`abort insert - invalid fuel stop: ${JSON.stringify(fuelstop)}`);
+        const { city, state, highway } = fuelstop;
+        
+        if (!city || !state || !highway) {
+            console.warn(`abort insert - invalid fuel stop: ${JSON.stringify(fuelstop)}`);
             return;
         }
 
