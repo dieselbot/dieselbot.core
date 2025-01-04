@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/efshelper/efshelper.core#readme",
   "dependencies": {
+    "@types/jest": "^29.5.14",
     "firebase-admin": "^13.0.2",
     "node-fetch": "^2.7.0"
   }
