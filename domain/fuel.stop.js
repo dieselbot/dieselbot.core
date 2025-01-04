@@ -1,15 +1,58 @@
+const { chop_left } = require("../common/utils");
+
 class FuelStop {
     constructor(text_line_1, text_line_2) {
         this.line_1 = text_line_1;
         this.line_2 = text_line_2;
-        this.code = '';
-        this.name = '';
         this.city = '';
         this.state = '';
         this.highway = '';
         this.exit = '';
         this.search_phrase = '';
     }
+    
+    #_city = null;
+    #_name = null;
+
+    set city(value){
+        this.#_city = chop_left.call(value, "/");
+    }
+    get city() { return this.#_city; }
+
+    get code() { 
+        switch (true) {
+            case /love/gi.test(this.#_name):
+                return "love";
+            case /pilot/gi.test(this.#_name):
+                return "pilot";
+            case /flying/gi.test(this.#_name):
+                return "flying";
+            case /petro/gi.test(this.#_name):
+                return "petro";
+            case /(tulsa terminal|laredo terminal)/gi.test(this.#_name):
+                return "melton";
+            default:
+                return null;
+        }    
+    }
+
+    set name(value){
+        switch (true) {
+            case /(pilot\s\#)/gi.test(value):
+                this.#_name = "PILOT TRAVEL CE";
+            case /(loves\stravel\sst)/gi.test(value):
+                this.#_name = "LOVES TRAVEL";
+            default:
+                this.#_name = chop_left.call(value, "/");
+        }
+    }
+    get name() { return this.#_name; }
+    
+    get dto() {
+        const { code, city, state, highway, exit } = this;
+        return { code, city, state, highway, exit };
+    }
+
     read() {
         let _exec_hwy = /I \d\d/.exec(this.line_1);
         let _exec_exit = /EX: \d+/.exec(this.line_2);
@@ -29,60 +72,14 @@ class FuelStop {
         this.highway = _exec_hwy[0].replace(' ', '-');
         this.exit = is_magee ? null : _exec_exit[0].match(/\d+/)[0];
 
-        this.name = normalize.name(this.name);
-        this.city = normalize.city(this.city);
-        this.code = get_code(this.name);
-
         this.search_phrase = `${this.name} ${this.city} ${this.state} ${this.highway} exit ${this.exit}`;
     }
-    get dto() {
-        const { code, city, state, highway, exit } = this;
-        return { code, city, state, highway, exit };
-    }
-}
-
-const normalize = {
-    name: function (name) {
-        switch (true) {
-            case /(pilot\s\#)/gi.test(name):
-                return "PILOT TRAVEL CE";
-            case /(loves\stravel\sst)/gi.test(name):
-                return "LOVES TRAVEL";
-            case /\//.test(name):
-                return name.substring(0, name.indexOf('/'))
-            default:
-                return name
-        }
-    },
-    city: function (city) {
-        let n = city.indexOf('/');
-        if (n > 0) {
-            return city.substring(0, n);
-        }
-        return city;
-    }
-}
-
-function get_code(name) {
-    switch (true) {
-        case /love/gi.test(name):
-            return "love";
-        case /pilot/gi.test(name):
-            return "pilot";
-        case /flying/gi.test(name):
-            return "flying";
-        case /petro/gi.test(name):
-            return "petro";
-        case /(tulsa terminal|laredo terminal)/gi.test(name):
-            return "melton";
-        default:
-            return null;
-    }
+    
 }
 
 FuelStop.isValid = function (fuelstop) {
     const { code, display_name } = fuelstop;
-    if(!code || !display_name) return false;
+    if (!code || !display_name) return false;
     const code_rgx = new RegExp(code, 'i');
     return code_rgx.test(display_name);
 }
