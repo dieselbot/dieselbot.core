@@ -7,7 +7,7 @@ class FuelStop {
         this.city = '';
         this.state = '';
         this.highway = '';
-        this.exit = '';
+        this.exit = null;
         this.search_phrase = '';
     }
     
@@ -54,14 +54,8 @@ class FuelStop {
     }
 
     read() {
-        let _exec_hwy = /I \d\d/.exec(this.line_1);
-        let _exec_exit = /EX: \d+/.exec(this.line_2);
-        const is_magee = /magee\s+ms/gi.test(this.line_2);
-
-        if (is_magee) {
-            _exec_hwy = /U \d\d/.exec(this.line_1);
-            _exec_exit = /EX:/.exec(this.line_2);
-        };
+        let _exec_hwy = /[A-Z]+ \d\d/.exec(this.line_1);
+        let _exec_exit = /EX:.*/.exec(this.line_2);
 
         const _city_state = this.line_2.substring(0, _exec_exit.index).trim().replace(/\s+/g, ' ');
         const _city_state_midpoint = _city_state.lastIndexOf(' ');
@@ -70,9 +64,15 @@ class FuelStop {
         this.city = _city_state.substring(0, _city_state_midpoint).trim();
         this.state = _city_state.substring(_city_state_midpoint).trim();
         this.highway = _exec_hwy[0].replace(' ', '-');
-        this.exit = is_magee ? null : _exec_exit[0].match(/\d+/)[0];
+        
+        if(_exec_exit[0].match(/\d+/)){
+            this.exit = _exec_exit[0].match(/\d+/)[0];
+        }
 
-        this.search_phrase = `${this.name} ${this.city} ${this.state} ${this.highway} exit ${this.exit}`;
+        this.search_phrase = `${this.name} ${this.city} ${this.state} ${this.highway}`;
+        
+        if(this.exit) this.search_phrase = this.search_phrase.concat(` exit ${this.exit}`);
+        
     }
     
 }
