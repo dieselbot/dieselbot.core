@@ -3,8 +3,9 @@ const SearchUseCase = require('./application/search.usecase');
 const FuelStopService = require('./services/fuelstop');
 
 async function search(fuel_solution_text) {
-    const search_usecase = new SearchUseCase();
-    search_usecase.fuel_solution = new FuelSolution(fuel_solution_text);
+    const search_usecase = new SearchUseCase(
+        new FuelSolution(fuel_solution_text)
+    );
 
     const results = await search_usecase.execute();
 
