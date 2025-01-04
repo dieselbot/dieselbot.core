@@ -15,7 +15,7 @@ class GooglePlacesService {
         const placeResponse = await this.#_placesAPI.textSearch(searchText);
 
         if(placeResponse.places && placeResponse.places.length > 1){
-            console.log(`multiple results found for query: "${searchText}"`);
+            console.warn(`multiple results found for query: "${searchText}"`);
             return;
         }
 
@@ -27,7 +27,7 @@ class GooglePlacesService {
             };
         }
 
-        console.log(`no results found for query: "${searchText}"`);
+        console.warn(`no results found for query: "${searchText}"`);
         
     }
 }
