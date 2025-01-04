@@ -64,3 +64,6 @@ COTTONDALE      FL EX: 130
 
 LOVES TRAVEL ST  U 49        QTY: FILL
 MAGEE           MS EX:        
+
+LOVES TRAVEL ST  U 27        QTY: 114 
+DAVENPORT       FL EX:
