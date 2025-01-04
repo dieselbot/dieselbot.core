@@ -8,8 +8,8 @@ initializeApp({
 });
 
 class FuelStopDB {
-    constructor() {
-        this.firestore = getFirestore()
+    constructor(firestore = getFirestore()) {
+        this.firestore = firestore;
     }
 }
 
