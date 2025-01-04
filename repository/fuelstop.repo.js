@@ -1,10 +1,12 @@
 const FuelStopDB = require("../infrastructure/fuelstop.db");
 
-const _db = new FuelStopDB();
-
 class FuelStopRepo {
-    constructor() {
-        this.fuelstops_collection = _db.firestore.collection("fuelstops");
+    
+    #_fuelStopDB;
+
+    constructor(fuelStopDB = new FuelStopDB()) {
+        this.#_fuelStopDB = fuelStopDB;
+        this.fuelstops_collection = this.#_fuelStopDB.firestore.collection("fuelstops");
     }
     async findOne(fuelstop) {
 
@@ -34,7 +36,7 @@ class FuelStopRepo {
 
     async addOne(fuelstop) {
 
-        const { city, state, highway, exit } = fuelstop;
+        const { city, state, highway } = fuelstop;
 
         if (!city || !state || !highway) {
             console.log('abort insert - fuel stop has missing fields');

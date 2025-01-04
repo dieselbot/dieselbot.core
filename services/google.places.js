@@ -1,13 +1,18 @@
 const GooglePlacesAPI = require('../infrastructure/google.places.api.js')
 
-const _placesAPI = new GooglePlacesAPI();
-
 class GooglePlacesService {
+    
+    #_placesAPI;
+
+    constructor(placesAPI = new GooglePlacesAPI()){
+        this.#_placesAPI = placesAPI;
+    }
+
     async findPlace(searchText){
         
         if(!searchText) return;
 
-        const placeResponse = await _placesAPI.textSearch(searchText);
+        const placeResponse = await this.#_placesAPI.textSearch(searchText);
 
         if(placeResponse.places && placeResponse.places.length > 1){
             console.log(`multiple results found for query: "${searchText}"`);

@@ -1,10 +1,14 @@
 const FuelStopAPI = require('../infrastructure/fuelstop.api.js');
 
-const _fuelStopAPI = new FuelStopAPI();
-
 class FuelStopService {
+    
+    #_fuelStopAPI;
+
+    constructor(fuelStopAPI = new FuelStopAPI()) {
+        this.#_fuelStopAPI = fuelStopAPI;
+    }
     async post(fuelStops){
-        return await _fuelStopAPI.post(fuelStops)
+        return await this.#_fuelStopAPI.post(fuelStops)
     }
 }
 
