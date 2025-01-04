@@ -78,8 +78,8 @@ class FuelStop {
 }
 
 FuelStop.isValid = function (fuelstop) {
-    const { code, display_name } = fuelstop;
-    if (!code || !display_name) return false;
+    const { code, display_name, city, state, highway } = fuelstop;
+    if (!code || !display_name || !city || !state || !highway) return false;
     const code_rgx = new RegExp(code, 'i');
     return code_rgx.test(display_name);
 }
