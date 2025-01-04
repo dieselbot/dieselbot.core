@@ -9,10 +9,7 @@ class FuelStopAPI {
             },
             body: JSON.stringify(fuelStops)
         }).then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            throw res.statusText;
+            if (!res.ok) throw new Error(res.statusText);
         })
     }
 }
