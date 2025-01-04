@@ -1,3 +1,4 @@
+const FuelStop = require("../domain/fuel.stop");
 const FuelStopDB = require("../infrastructure/fuelstop.db");
 
 class FuelStopRepo {
@@ -36,10 +37,8 @@ class FuelStopRepo {
 
     async addOne(fuelstop) {
 
-        const { city, state, highway } = fuelstop;
-
-        if (!city || !state || !highway) {
-            console.log('abort insert - fuel stop has missing fields');
+        if (!FuelStop.isValid(fuelstop)) {
+            console.log(`abort insert - invalid fuel stop: ${JSON.stringify(fuelstop)}`);
             return;
         }
 
