@@ -8,8 +8,11 @@ class FuelStopAPI {
                 authorization: `Bearer ${process.env.EFS_API_KEY}`
             },
             body: JSON.stringify(fuelStops)
-        }).then(res => {
-            if (!res.ok) throw new Error(res.statusText);
+        }).then(async (res) => {
+            if(!res.ok){
+                const message = await res.text();
+                console.warn(message);
+            }
         })
     }
 }
