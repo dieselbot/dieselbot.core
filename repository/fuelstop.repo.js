@@ -37,11 +37,10 @@ class FuelStopRepo {
 
     async addOne(fuelstop) {
 
-        const { city, state, highway } = fuelstop;
+        const {code, display_name, city, state, highway } = fuelstop;
         
-        if (!city || !state || !highway) {
-            console.warn(`abort insert - invalid fuel stop: ${JSON.stringify(fuelstop)}`);
-            return;
+        if (!code || !display_name || !city || !state || !highway) {
+            throw new Error(`abort insert - invalid fuel stop: ${JSON.stringify(fuelstop)}`);
         }
 
         const docRef = await this.fuelstops_collection.add(fuelstop);
