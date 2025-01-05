@@ -36,17 +36,8 @@ class FuelStopRepo {
     }
 
     async addOne(fuelstop) {
-
-        const {code, display_name, city, state, highway } = fuelstop;
-        
-        if (!code || !display_name || !city || !state || !highway) {
-            throw new Error(`abort insert - invalid fuel stop: ${JSON.stringify(fuelstop)}`);
-        }
-
         const docRef = await this.fuelstops_collection.add(fuelstop);
-
         return docRef.id;
-
     }
 }
 
