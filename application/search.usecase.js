@@ -14,22 +14,29 @@ class SearchUseCase {
         this.fuel_stop_repo = fuel_stop_repo;
         this.missing_fuel_stops = [];
     }
+    
+    search_database = async (fuelStop) => await this.fuel_stop_repo.findOne(fuelStop);
+
+    async search_google(fuelStop){
+        let result = await this.places_service.findPlace(fuelStop.search_phrase);
+        return { ...result, ...fuelStop.dto };
+    }
+
     async execute() {
         this.fuel_solution.read();
-        const fuelStops = this.fuel_solution.fuel_stops;
+
         const results = [];
 
-        for (const [key, fuelStop] of fuelStops) {
+        for (const [,fuelStop] of this.fuel_solution.fuel_stops) {
 
-            let result = await this.fuel_stop_repo.findOne(fuelStop);
+            let result = await this.search_database(fuelStop);
 
             if (!result) {
-                result = await this.places_service.findPlace(fuelStop.search_phrase);
-                result = { ...result, ...fuelStop.dto };
-                if(FuelStop.isValid(result)){
+                result = await this.search_google(fuelStop);
+                if(result){
                     this.missing_fuel_stops.push(result);
                 } else {
-                    console.log(`no results found for query: "${fuelStop.search_phrase}"`, result);
+                    console.warn(`no results found for query: "${fuelStop.search_phrase}"`, result);
                 }
             }
 
