@@ -6,6 +6,12 @@ function chop_left(char) {
     : string_value;
 }
 
+function is_empty(value){
+    if(value === false) return false;
+    return (value == null || value == undefined || value == '');
+}
+
 module.exports = {
-    chop_left
+    chop_left,
+    is_empty
 }

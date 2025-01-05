@@ -1,4 +1,4 @@
-const { chop_left } = require("./utils");
+const { chop_left, is_empty } = require("./utils");
 
 describe('chop_left string utility', () => {
     
@@ -46,5 +46,32 @@ describe('chop_left string utility', () => {
         const result = original_string_value.chop_left();
 
         expect(result).toBe(original_string_value);
+    })
+})
+
+describe('is_empty function', () => {
+    it('returns true for null', () => {
+        const input_value = null;
+        const result = is_empty(input_value);
+        expect(result).toBe(true);
+    })
+    it('returns true for undefined', () => {
+        const result = is_empty();
+        expect(result).toBe(true);
+    })
+    it('returns true for empty string', () => {
+        const input_value = '';
+        const result = is_empty(input_value);
+        expect(result).toBe(true);
+    })
+    it('returns true for 0', () => {
+        const input_value = 0;
+        const result = is_empty(input_value);
+        expect(result).toBe(true);
+    })
+    it('returns false for false', () => {
+        const input_value = false;
+        const result = is_empty(input_value);
+        expect(result).toBe(false);
     })
 })
