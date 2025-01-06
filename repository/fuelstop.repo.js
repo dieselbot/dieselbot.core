@@ -10,7 +10,7 @@ class FuelStopRepo {
         fuelStopValidator = new FuelStopValidator()
     ) {
         this.#_fuelStopDB = fuelStopDB;
-        this.fuelstops_collection = this.#_fuelStopDB.firestore.collection("fuelstops");
+        this.fuelstops_collection = this.#_fuelStopDB.firestore && this.#_fuelStopDB.firestore.collection("fuelstops");
         this.fuelStopValidator = fuelStopValidator;
     }
     async findOne(fuelstop) {
