@@ -30,7 +30,7 @@ describe('fuel stop validator', () => {
     let fuel_stop_validator;
 
     const get_fuel_stop = () => ({
-        code: '-', 
+        code: 'petro', 
         display_name: '-',
         address: '0000 N Test Rd, TestCity, XX 00000',
         city: '-',
