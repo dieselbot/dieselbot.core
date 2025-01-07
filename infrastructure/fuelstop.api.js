@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
 class FuelStopAPI {
-    async post(fuelStops) {
+    post(fuelStops) {
         return fetch(`${process.env.EFS_API_ORIGIN}/fuelstop`, {
             method: 'POST',
             headers: {

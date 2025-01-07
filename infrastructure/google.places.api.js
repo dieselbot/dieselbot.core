@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
 class GooglePlacesAPI { 
-    async textSearch(textQuery){
+    textSearch(textQuery){
         return fetch('https://places.googleapis.com/v1/places:searchText',{
             method: 'POST',
             headers: {

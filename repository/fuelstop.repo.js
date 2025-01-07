@@ -39,14 +39,14 @@ class FuelStopRepo {
         return snapshot.docs[0].data();
     }
 
-    async addOne(fuelstop) {
+    addOne(fuelstop) {
         if (!this.fuelStopValidator.validate(fuelstop)) {
             throw new Error(`fuel stop validation failed: ${JSON.stringify(fuelstop)}`)
         }
-        return await this.fuelstops_collection.add(fuelstop);
+        return this.fuelstops_collection.add(fuelstop);
     }
 
-    async addMany(fuelstops) {
+    addMany(fuelstops) {
         for (const fuelstop of fuelstops) {
             if (!this.fuelStopValidator.validate(fuelstop)) {
                 throw new Error(`fuel stop validation failed: ${JSON.stringify(fuelstop)}`)

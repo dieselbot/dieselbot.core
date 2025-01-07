@@ -7,8 +7,8 @@ class FuelStopService {
     constructor(fuelStopAPI = new FuelStopAPI()) {
         this.#_fuelStopAPI = fuelStopAPI;
     }
-    async post(fuelStops){
-        return await this.#_fuelStopAPI.post(fuelStops)
+    post(fuelStops){
+        return this.#_fuelStopAPI.post(fuelStops)
     }
 }
 

@@ -15,7 +15,7 @@ class SearchUseCase {
         this.missing_fuel_stops = [];
     }
     
-    search_database = async (fuelStop) => await this.fuel_stop_repo.findOne(fuelStop);
+    search_database = (fuelStop) => this.fuel_stop_repo.findOne(fuelStop);
 
     async search_google(fuelStop){
         let result = await this.places_service.findPlace(fuelStop.search_phrase);
