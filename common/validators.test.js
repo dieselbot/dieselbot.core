@@ -49,6 +49,13 @@ describe('fuel stop validator', () => {
 
         expect(result).toBe(false);
     })
+    it('fails when fuel stop is empty object', () => {
+        const fuel_stop = {};
+
+        const result = fuel_stop_validator.validate(fuel_stop);
+
+        expect(result).toBe(false);
+    })
     it('fails when fuel stop code is null', () => {
         const fuel_stop = get_fuel_stop();
               fuel_stop.code = null;
