@@ -59,6 +59,11 @@ describe('is_empty function', () => {
         const result = is_empty();
         expect(result).toBe(true);
     })
+    it('returns true for empty object', () => {
+        const input_value = {};
+        const result = is_empty(input_value);
+        expect(result).toBe(true);
+    })
     it('returns true for empty string', () => {
         const input_value = '';
         const result = is_empty(input_value);
