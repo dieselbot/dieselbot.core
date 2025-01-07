@@ -20,12 +20,12 @@ class FuelStopValidator extends Validator {
     constructor(){
         super([
             (fuelStop) => !is_empty(fuelStop),
+            (fuelStop) => codes.includes(fuelStop.code),
             (fuelStop) => !is_empty(fuelStop.display_name),
             (fuelStop) => !is_empty(fuelStop.address),
             (fuelStop) => !is_empty(fuelStop.city),
             (fuelStop) => (!is_empty(fuelStop.state) && fuelStop.state.length == 2
-                           && (new RegExp(`${fuelStop.state}.*\\d+`, 'g')).test(fuelStop.address)),
-            (fuelStop) => codes.includes(fuelStop.code)
+                           && (new RegExp(`${fuelStop.state}.*\\d+`, 'g')).test(fuelStop.address))
         ])
     }
 }
