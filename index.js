@@ -1,1 +1,1 @@
-require('./demo/search.js');
+require('./demo/scrap.js');
