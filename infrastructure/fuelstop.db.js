@@ -1,20 +1,21 @@
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
-const google_app_creds_path = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
 let serviceAccount = null;
 
-if(google_app_creds_path){
-  serviceAccount = require(google_app_creds_path);
+try {
+  serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
   initializeApp({
     credential: cert(serviceAccount)
   });
+} catch (error) {
+  console.warn(`failed to init Firebase: `, error);
 }
 
 class FuelStopDB {
-    constructor(firestore = serviceAccount && getFirestore()) {
-        this.firestore = firestore;
-    }
+  constructor(firestore = serviceAccount && getFirestore()) {
+    this.firestore = firestore;
+  }
 }
 
 module.exports = FuelStopDB;
