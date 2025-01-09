@@ -1,6 +1,7 @@
 const GooglePlacesService = require('../services/google.places');
 const FuelStopRepo = require('../repository/fuelstop.repo');
 const FuelSolution = require('../domain/fuel.solution');
+const Result = require('../domain/result');
 
 class SearchUseCase {
     constructor(
@@ -11,7 +12,7 @@ class SearchUseCase {
         this.fuel_solution = fuel_solution;
         this.places_service = places_service;
         this.fuel_stop_repo = fuel_stop_repo;
-        this.missing_fuel_stops = [];
+        this.new_fuel_stops = [];
     }
     
     search_database = (fuelStop) => this.fuel_stop_repo.findOne(fuelStop);
@@ -22,27 +23,41 @@ class SearchUseCase {
     }
 
     async execute() {
-        this.fuel_solution.read();
+        const _result = new Result();
 
-        const results = [];
+        try {
+            this.fuel_solution.read();
+        } catch (error) {
+            _result.message = error.message;
+            return _result;
+        }
+
+        const searchResults = [];
 
         for (const [,fuelStop] of this.fuel_solution.fuel_stops) {
 
-            let result = await this.search_database(fuelStop);
+            let searchResult = await this.search_database(fuelStop);
 
-            if (!result) {
-                result = await this.search_google(fuelStop);
-                if(result){
-                    this.missing_fuel_stops.push(result);
+            if (!searchResult) {
+                searchResult = await this.search_google(fuelStop);
+                if(searchResult){
+                    this.new_fuel_stops.push(searchResult);
                 } else {
-                    console.warn(`no results found for query: "${fuelStop.search_phrase}"`, result);
+                    console.warn(`no results found for query: "${fuelStop.search_phrase}"`, searchResult);
                 }
             }
 
-            results.push(result);
+            searchResults.push(searchResult);
         }
 
-        return Promise.all(results);
+        if(searchResults.length > 0){
+            _result.success = true;
+            _result.data = searchResults;
+        } else {
+            _result.message = "no results found";
+        }
+        
+        return _result;
     }
 }
 
