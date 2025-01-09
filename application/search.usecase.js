@@ -1,6 +1,5 @@
 const GooglePlacesService = require('../services/google.places');
 const FuelStopRepo = require('../repository/fuelstop.repo');
-const FuelStop = require('../domain/fuel.stop');
 const FuelSolution = require('../domain/fuel.solution');
 
 class SearchUseCase {
@@ -18,7 +17,7 @@ class SearchUseCase {
     search_database = (fuelStop) => this.fuel_stop_repo.findOne(fuelStop);
 
     async search_google(fuelStop){
-        let result = await this.places_service.findPlace(fuelStop.search_phrase);
+        const result = await this.places_service.findPlace(fuelStop.search_phrase);
         return { ...result, ...fuelStop.dto };
     }
 
