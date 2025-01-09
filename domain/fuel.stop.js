@@ -57,14 +57,14 @@ class FuelStop {
 
     read_line_1() {
         const _exec_hwy = /[I|U]+ \d\d/.exec(this.line_1);
-        if (!_exec_hwy) throw new Error("missing highway info");
+        if (!_exec_hwy) throw new Error("fuel stop is missing highway info");
         this.name = this.line_1.substring(0, _exec_hwy.index).trim();
         this.highway = _exec_hwy[0].replace(' ', '-');
     }
 
     read_line_2() {
         const _exec_exit = /EX:.*/.exec(this.line_2);
-        if (!_exec_exit) throw new Error("missing exit info");
+        if (!_exec_exit) throw new Error("fuel stop is missing exit info");
         const _city_state = this.line_2.substring(0, _exec_exit.index).trim().replace(/\s+/g, ' ');
         const _city_state_midpoint = _city_state.lastIndexOf(' ');
         this.city = _city_state.substring(0, _city_state_midpoint).trim();
