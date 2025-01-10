@@ -14,33 +14,26 @@ class SearchUseCase {
         this.fuel_stop_repo = fuel_stop_repo;
         this.new_fuel_stops = [];
     }
-    
-    search_database = (fuelStop) => this.fuel_stop_repo.findOne(fuelStop);
-
-    async search_google(fuelStop){
-        const result = await this.places_service.findPlace(fuelStop.search_phrase);
-        return { ...result, ...fuelStop.dto };
-    }
 
     async execute() {
-        const _result = new Result();
+        const result = new Result();
 
         try {
             this.fuel_solution.read();
         } catch (error) {
-            _result.message = error.message;
-            return _result;
+            result.message = error.message;
+            return result;
         }
 
         const searchResults = [];
 
-        for (const [,fuelStop] of this.fuel_solution.fuel_stops) {
+        for (const [, fuelStop] of this.fuel_solution.fuel_stops) {
 
-            let searchResult = await this.search_database(fuelStop);
+            let searchResult = await this.fuel_stop_repo.findOne(fuelStop);
 
             if (!searchResult) {
-                searchResult = await this.search_google(fuelStop);
-                if(searchResult){
+                searchResult = await this.places_service.findPlace(fuelStop);
+                if (searchResult) {
                     this.new_fuel_stops.push(searchResult);
                 } else {
                     console.warn(`no results found for query: "${fuelStop.search_phrase}"`, searchResult);
@@ -50,14 +43,14 @@ class SearchUseCase {
             searchResults.push(searchResult);
         }
 
-        if(searchResults.length > 0){
-            _result.success = true;
-            _result.data = searchResults;
+        if (searchResults.length > 0) {
+            result.success = true;
+            result.data = searchResults;
         } else {
-            _result.message = "no results found";
+            result.message = "no results found";
         }
-        
-        return _result;
+
+        return result;
     }
 }
 
