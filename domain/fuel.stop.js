@@ -50,11 +50,6 @@ class FuelStop {
     }
     get name() { return this.#_name; }
 
-    get dto() {
-        const { code, city, state, highway, exit } = this;
-        return { code, city, state, highway, exit };
-    }
-
     read_line_1() {
         const _exec_hwy = /[I|U]+ \d\d/.exec(this.line_1);
         if (!_exec_hwy) throw new Error("fuel stop is missing highway info");
