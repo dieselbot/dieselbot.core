@@ -1,7 +1,7 @@
-const { chop_left, is_empty } = require("./utils");
+const { chop_left, is_empty, read_lines, check_env } = require("./utils");
 
 describe('chop_left string utility', () => {
-    
+
     String.prototype.chop_left = chop_left;
 
     it('should drop all characters following the input character', () => {
@@ -78,5 +78,77 @@ describe('is_empty function', () => {
         const input_value = false;
         const result = is_empty(input_value);
         expect(result).toBe(false);
+    })
+    it('returns false for non-null value', () => {
+        const input_value = "x";
+        const result = is_empty(input_value);
+        expect(result).toBe(false);
+    })
+})
+
+describe('read_lines function', () => {
+
+    const string_value = 'line one \n line two \n line three';
+
+    it('should return an array', () => {
+        const lines = read_lines(string_value);
+        expect(Array.isArray(lines)).toBe(true);
+    })
+    it('should divide string by new line character', () => {
+        const lines = read_lines(string_value);
+        expect(lines.length).toBe(3);
+    })
+})
+
+describe('check_env function', () => {
+    const fs = require('fs');
+    const path = require('path');
+
+    it('should use default file path when file path argument is undefined', () => {
+        jest.spyOn(fs, 'existsSync').mockReturnValue(false);
+        console.warn = jest.fn();
+        const default_file_path = path.join(__dirname, '../.env');
+        const input_file_path = undefined;
+
+        check_env(input_file_path);
+
+        expect(fs.existsSync).toHaveBeenCalledWith(default_file_path);
+    })
+    it('should use input file path when input file path is defined', () => {
+        jest.spyOn(fs, 'existsSync').mockReturnValue(false);
+        console.warn = jest.fn();
+        const input_file_path = 'x';
+
+        check_env(input_file_path);
+
+        expect(fs.existsSync).toHaveBeenCalledWith(input_file_path);
+    })
+    it('should warn when the file path does not exist', () => {
+        jest.spyOn(fs, 'existsSync').mockReturnValue(false);
+        jest.spyOn(console, 'warn');
+
+        check_env();
+
+        expect(console.warn).toHaveBeenCalled();
+    })
+    it('should warn when there is an error reading the file path', () => {
+        jest.spyOn(fs, 'existsSync').mockReturnValue(true);
+        jest.spyOn(fs, 'readFile').mockImplementation((path, encoding, callback) => callback(true));
+
+        check_env();
+
+        expect(console.warn).toHaveBeenCalled();
+    })
+    it('should warn when environment variable is undefined', () => {
+        const env_variable = 'x';
+        const file_data = `${env_variable}=`;
+        jest.spyOn(fs, 'readFile').mockImplementation((path, encoding, callback) => callback(false, file_data));
+        jest.spyOn(fs, 'existsSync').mockReturnValue(true);
+        jest.replaceProperty(process, 'env', { [env_variable]: undefined })
+        jest.spyOn(console, 'warn');
+
+        check_env();
+
+        expect(console.warn).toHaveBeenCalled();
     })
 })
