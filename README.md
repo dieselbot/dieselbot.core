@@ -1,4 +1,4 @@
-# efshelper.core
+# dieselbot.core
 
 ```sh
 npm test

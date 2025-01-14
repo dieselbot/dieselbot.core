@@ -1,5 +1,5 @@
 {
-  "name": "efshelper.core",
+  "name": "dieselbot.core",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/efshelper/efshelper.core.git"
+    "url": "git+https://github.com/dieselbot/dieselbot.core.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/efshelper/efshelper.core/issues"
+    "url": "https://github.com/dieselbot/dieselbot.core/issues"
   },
-  "homepage": "https://github.com/efshelper/efshelper.core#readme",
+  "homepage": "https://github.com/dieselbot/dieselbot.core#readme",
   "dependencies": {
     "@types/jest": "^29.5.14",
     "firebase-admin": "^13.0.2",
