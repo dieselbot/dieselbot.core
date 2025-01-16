@@ -14,10 +14,21 @@ class GooglePlacesService {
 
         if (!searchText) return;
 
-        const placeResponse = await this.#_placesAPI.textSearch(searchText);
+        let placeResponse = await this.#_placesAPI.textSearch(searchText);
+
+        const warning = `multiple results found for query: "${searchText}"`;
 
         if (placeResponse.places && placeResponse.places.length > 1) {
-            console.warn(`multiple results found for query: "${searchText}"`);
+            if(fuelstop.exit){
+                placeResponse = await this.#_placesAPI.textSearch(`${searchText} ${fuelstop.exit}`);
+            } else {
+                console.warn(warning);
+                return;
+            }
+        }
+
+        if (placeResponse.places && placeResponse.places.length > 1) {
+            console.warn(warning);
             return;
         }
 
@@ -25,10 +36,9 @@ class GooglePlacesService {
             const place = placeResponse.places[0];
             const { code, city, state, highway, exit } = fuelstop;
             return {
-                code,
                 display_name: place.displayName.text,
                 address: place.formattedAddress,
-                city, state, highway, exit
+                code, city, state, highway, exit
             };
         }
 
