@@ -66,8 +66,7 @@ describe('methods', () => {
         expect(fuelStop.read_line_2).toHaveBeenCalled();
     })
     it('should read name and highway from line 1', () => {
-        const fuelStop = new FuelStop('x','y');
-        fuelStop.line_1 = 'PILOT TRAVEL CE I 80 QTY: FILL';
+        const fuelStop = new FuelStop('PILOT TRAVEL CE I 80 QTY: FILL','y');
         
         fuelStop.read_line_1();
 
@@ -75,8 +74,7 @@ describe('methods', () => {
         expect(fuelStop.highway).toBe('I-80');
     })
     it('should read city and state from line 2', () => {
-        const fuelStop = new FuelStop('x','y');
-        fuelStop.line_2 = 'GRAND ISLAND NE EX: 312';
+        const fuelStop = new FuelStop('x', 'GRAND ISLAND NE EX: 312');
         
         fuelStop.read_line_2();
 
@@ -84,25 +82,23 @@ describe('methods', () => {
         expect(fuelStop.state).toBe('NE');
     })
     it('should error if line 1 is missing highway info', () => {
-        const fuelStop = new FuelStop('x','y');
-        fuelStop.line_1 = 'PILOT TRAVEL CE QTY: FILL';
+        const fuelStop = new FuelStop('PILOT TRAVEL CE QTY: FILL','y');
         
         expect(() => {
             fuelStop.read_line_1()
         }).toThrow('fuel stop is missing highway info');
     })
     it('should error if line 2 is missing exit info', () => {
-        const fuelStop = new FuelStop('x','y');
-        fuelStop.line_2 = 'GRAND ISLAND NE';
+        const fuelStop = new FuelStop('x', 'GRAND ISLAND NE');
         
         expect(() => {
             fuelStop.read_line_2()
         }).toThrow('fuel stop is missing exit info');
     })
     test('read method: should set search_phrase', () => {
-        const fuelStop = new FuelStop('x','y');
-        fuelStop.line_1 = 'PILOT TRAVEL CE I 80 QTY: FILL';
-        fuelStop.line_2 = 'GRAND ISLAND NE EX: 312';
+        const fuelStop = new FuelStop(
+            'PILOT TRAVEL CE I 80 QTY: FILL',
+            'GRAND ISLAND NE EX: 312');
         
         expect(fuelStop.search_phrase).toBe('');
         
