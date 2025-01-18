@@ -21,6 +21,11 @@ class FuelStop {
     }
     get city() { return this.#_city; }
 
+    set name(value) {
+        this.#_name = chop_left.call(value, "/");
+    }
+    get name() { return this.#_name; }
+
     get code() {
         switch (true) {
             case /love/gi.test(this.#_name):
@@ -37,18 +42,6 @@ class FuelStop {
                 return null;
         }
     }
-
-    set name(value) {
-        switch (true) {
-            case /(pilot\s\#)/gi.test(value):
-                this.#_name = "PILOT TRAVEL CE";
-            case /(loves\stravel\sst)/gi.test(value):
-                this.#_name = "LOVES TRAVEL";
-            default:
-                this.#_name = chop_left.call(value, "/");
-        }
-    }
-    get name() { return this.#_name; }
 
     read_line_1() {
         const _exec_hwy = /[I|U]+ \d\d/.exec(this.line_1);
