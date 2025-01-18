@@ -9,16 +9,15 @@ describe('fuel solution', () => {
                 .getPrototypeOf(fuelSolution.fuel_stops))
                 .toBe(Map.prototype);
     })
-    it('should set fuel solution text', () => {
-        const fuel_solution_text = 't';
-        const fuelSolution = new FuelSolution(fuel_solution_text);
-
-        expect(fuelSolution.text).toBe(fuel_solution_text)
-    })
-    it('should read fuel solution text', () => {
-        const fuel_solution_text = `
+    const fuel_solution_text = `
             PILOT TRAVEL CE I 80 QTY: FILL
             GRAND ISLAND NE EX: 312`;
+    it('should set fuel solution text', () => {
+        const fuelSolution = new FuelSolution(fuel_solution_text);
+
+        expect(fuelSolution.text).toBe(fuel_solution_text);
+    })
+    it('should read fuel solution text', () => {
         const fuelSolution = new FuelSolution(fuel_solution_text);
         
         expect(fuelSolution.fuel_stops.size).toBe(0);
