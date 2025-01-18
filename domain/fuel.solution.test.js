@@ -20,7 +20,9 @@ describe('fuel solution', () => {
             PILOT TRAVEL CE I 80 QTY: FILL
             GRAND ISLAND NE EX: 312`;
         const fuelSolution = new FuelSolution(fuel_solution_text);
-
+        
+        expect(fuelSolution.fuel_stops.size).toBe(0);
+        
         fuelSolution.read();
 
         expect(fuelSolution.fuel_stops.size).toBe(1);
