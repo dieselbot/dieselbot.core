@@ -4,7 +4,7 @@ describe('constructor', () => {
     test.each([
         ['line 1', undefined, 'x'],
         ['line 2', "x", undefined]
-    ])('should error when %s is not defined', (line, line_1, line_2) => {
+    ])('should error if %s is not defined', (line, line_1, line_2) => {
         expect(() => {
             new FuelStop(line_1, line_2);
         }).toThrow(`missing ${line}`)
@@ -12,7 +12,7 @@ describe('constructor', () => {
 })
 
 describe('members', () => {
-    
+
     const fuelStop = new FuelStop('x','y');
 
     it('should set name', () => {
@@ -43,7 +43,7 @@ describe('members', () => {
         ['melton', "LAREDO TERMINAL"],
         ['melton', "TULSA TERMINAL"]
     ])('should set "%s" code', (code, name) => {
-        
+
         fuelStop.name = name;
 
         expect(fuelStop.code).toBe(code);
@@ -55,8 +55,8 @@ describe('members', () => {
 })
 
 describe('methods', () => {
-    const fuelStop = new FuelStop('x','y');
     it('should read lines 1 and 2', () => {
+        const fuelStop = new FuelStop('x','y');
         fuelStop.read_line_1 = jest.fn();
         fuelStop.read_line_2 = jest.fn();
         
@@ -64,5 +64,51 @@ describe('methods', () => {
 
         expect(fuelStop.read_line_1).toHaveBeenCalled();
         expect(fuelStop.read_line_2).toHaveBeenCalled();
+    })
+    it('should read name and highway from line 1', () => {
+        const fuelStop = new FuelStop('x','y');
+        fuelStop.line_1 = 'PILOT TRAVEL CE I 80 QTY: FILL';
+        
+        fuelStop.read_line_1();
+
+        expect(fuelStop.name).toBe('PILOT TRAVEL CE');
+        expect(fuelStop.highway).toBe('I-80');
+    })
+    it('should read city and state from line 2', () => {
+        const fuelStop = new FuelStop('x','y');
+        fuelStop.line_2 = 'GRAND ISLAND NE EX: 312';
+        
+        fuelStop.read_line_2();
+
+        expect(fuelStop.city).toBe('GRAND ISLAND');
+        expect(fuelStop.state).toBe('NE');
+    })
+    it('should error if line 1 is missing highway info', () => {
+        const fuelStop = new FuelStop('x','y');
+        fuelStop.line_1 = 'PILOT TRAVEL CE QTY: FILL';
+        
+        expect(() => {
+            fuelStop.read_line_1()
+        }).toThrow('fuel stop is missing highway info');
+    })
+    it('should error if line 2 is missing exit info', () => {
+        const fuelStop = new FuelStop('x','y');
+        fuelStop.line_2 = 'GRAND ISLAND NE';
+        
+        expect(() => {
+            fuelStop.read_line_2()
+        }).toThrow('fuel stop is missing exit info');
+    })
+    test('read method: should set search_phrase', () => {
+        const fuelStop = new FuelStop('x','y');
+        fuelStop.line_1 = 'PILOT TRAVEL CE I 80 QTY: FILL';
+        fuelStop.line_2 = 'GRAND ISLAND NE EX: 312';
+        
+        expect(fuelStop.search_phrase).toBe('');
+        
+        fuelStop.read();
+
+        expect(fuelStop.search_phrase)
+            .toBe(`${fuelStop.name} ${fuelStop.city} ${fuelStop.state} ${fuelStop.highway}`);
     })
 })
