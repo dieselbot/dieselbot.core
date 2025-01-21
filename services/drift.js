@@ -10,8 +10,9 @@ class DriftService {
     send(conversation_id, fuelstops) {
         let message = ``;
         for (const fuelstop of fuelstops) {
-            message = message.concat(`${fuelstop.display_name}\n${fuelstop.address}\n\n`)
+            message = message.concat(`<p>${fuelstop.display_name}<br/>${fuelstop.address}</p><br/><br/>`)
         }
+        message = message.substring(0, message.lastIndexOf('<br/><br/>'))
         return this.#_driftAPI.send(conversation_id, message)
     }
 }
