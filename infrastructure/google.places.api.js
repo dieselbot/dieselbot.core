@@ -7,7 +7,7 @@ class GooglePlacesAPI {
             headers: {
                 'Content-Type': 'application/json',
                 'X-Goog-Api-Key': process.env.GOOGLE_API_KEY,
-                'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.priceLevel'
+                'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.websiteUri,places.googleMapsUri'
             },
             body: JSON.stringify({
                 "textQuery" : textQuery
