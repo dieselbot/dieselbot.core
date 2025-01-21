@@ -10,6 +10,8 @@ class FuelStop {
         this.state = '';
         this.highway = '';
         this.exit = null;
+        this.website = '';
+        this.map = '';
         this.search_phrase = '';
     }
 

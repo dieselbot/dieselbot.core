@@ -38,7 +38,9 @@ class GooglePlacesService {
             return {
                 display_name: place.displayName.text,
                 address: place.formattedAddress,
-                code, city, state, highway, exit
+                code, city, state, highway, exit,
+                website: place.websiteUri,
+                map: place.googleMapsUri
             };
         }
 
