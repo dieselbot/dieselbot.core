@@ -4,6 +4,7 @@ const FuelSolution = require('../domain/fuel.solution');
 const Result = require('../domain/result');
 
 class SearchUseCase {
+    #new_fuel_stops = [];
     constructor(
         fuel_solution = new FuelSolution(),
         places_service = new GooglePlacesService(),
@@ -12,7 +13,6 @@ class SearchUseCase {
         this.fuel_solution = fuel_solution;
         this.places_service = places_service;
         this.fuel_stop_repo = fuel_stop_repo;
-        this.new_fuel_stops = [];
     }
 
     async execute() {
@@ -34,7 +34,7 @@ class SearchUseCase {
             if (!searchResult) {
                 searchResult = await this.places_service.findPlace(fuelStop);
                 if (searchResult) {
-                    this.new_fuel_stops.push(searchResult);
+                    this.#new_fuel_stops.push(searchResult);
                 } else {
                     console.warn(`no results found for query: "${fuelStop.search_phrase}"`, searchResult);
                 }
@@ -48,6 +48,10 @@ class SearchUseCase {
             result.data = searchResults;
         } else {
             result.message = "no results found";
+        }
+
+        if (this.#new_fuel_stops.length > 0) {
+            this.fuel_stop_repo.addMany(this.#new_fuel_stops);
         }
 
         return result;
