@@ -41,7 +41,7 @@ class FuelStopRepo {
 
     addOne(fuelstop) {
         if (!this.fuelStopValidator.validate(fuelstop)) {
-            throw new Error(`fuel stop validation failed: ${JSON.stringify(fuelstop)}`)
+            return Promise.reject(`fuel stop validation failed: ${JSON.stringify(fuelstop)}`)
         }
         return this.fuelstops_collection.add(fuelstop);
     }
@@ -49,7 +49,7 @@ class FuelStopRepo {
     addMany(fuelstops) {
         for (const fuelstop of fuelstops) {
             if (!this.fuelStopValidator.validate(fuelstop)) {
-                throw new Error(`fuel stop validation failed: ${JSON.stringify(fuelstop)}`)
+                return Promise.reject(`fuel stop validation failed: ${JSON.stringify(fuelstop)}`)
             }
         }
         return Promise.all(fuelstops.map((fuelstop) => {
