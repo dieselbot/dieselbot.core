@@ -2,9 +2,10 @@ const GooglePlacesService = require('../services/google.places');
 const FuelStopRepo = require('../repository/fuelstop.repo');
 const FuelSolution = require('../domain/fuel.solution');
 const Result = require('../domain/result');
+const globalEmitter = require('../common/global.emitter');
 
 class SearchUseCase {
-    #new_fuel_stops = [];
+    #unlisted_fuel_stops = [];
     constructor(
         fuel_solution = new FuelSolution(),
         places_service = new GooglePlacesService(),
@@ -25,33 +26,32 @@ class SearchUseCase {
             return result;
         }
 
-        const searchResults = [];
+        result.data = [];
 
-        for (const [, fuelStop] of this.fuel_solution.fuel_stops) {
+        for (const [, fuel_stop] of this.fuel_solution.fuel_stops) {
 
-            let searchResult = await this.fuel_stop_repo.findOne(fuelStop);
+            let search_result = await this.fuel_stop_repo.findOne(fuel_stop);
 
-            if (!searchResult) {
-                searchResult = await this.places_service.findPlace(fuelStop);
-                if (searchResult) {
-                    this.#new_fuel_stops.push(searchResult);
+            if (!search_result) {
+                 search_result = await this.places_service.findPlace(fuel_stop);
+                if (search_result) {
+                    this.#unlisted_fuel_stops.push(search_result);
                 } else {
-                    console.warn(`no results found for query: "${fuelStop.search_phrase}"`, searchResult);
+                    console.warn(`no results found for query: "${fuel_stop.search_phrase}"`, search_result);
+                    continue;
                 }
             }
 
-            searchResults.push(searchResult);
+            result.data.push(search_result);
         }
 
-        if (searchResults.length > 0) {
+        if (result.data.length) {
             result.success = true;
-            result.data = searchResults;
+            if(this.#unlisted_fuel_stops.length){
+                globalEmitter.emit('insert:unlisted_fuel_stops', this.#unlisted_fuel_stops);
+            }
         } else {
             result.message = "no results found";
-        }
-
-        if (this.#new_fuel_stops.length > 0) {
-            this.fuel_stop_repo.addMany(this.#new_fuel_stops);
         }
 
         return result;
