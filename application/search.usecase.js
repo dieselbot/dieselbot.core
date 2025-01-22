@@ -37,7 +37,6 @@ class SearchUseCase {
                 if (search_result) {
                     this.#unlisted_fuel_stops.push(search_result);
                 } else {
-                    console.warn(`no results found for query: "${fuel_stop.search_phrase}"`, search_result);
                     continue;
                 }
             }
