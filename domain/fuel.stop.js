@@ -24,7 +24,16 @@ class FuelStop {
     get city() { return this.#_city; }
 
     set name(value) {
-        this.#_name = chop_left.call(value, "/");
+        switch (true){
+            case /LOVES #/.test(value):
+                this.#_name = "LOVES TRAVEL";
+                return;
+            case /PILOT TRAVEL CE/.test(value):
+                this.#_name = "PILOT TRAVEL";
+                return;
+            default:
+                this.#_name = chop_left.call(value, "/");
+        }
     }
     get name() { return this.#_name; }
 
