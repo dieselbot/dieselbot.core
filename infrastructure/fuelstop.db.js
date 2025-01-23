@@ -18,6 +18,22 @@ class FuelStopDB {
   constructor(firestore = serviceAccount && getFirestore()) {
     this.firestore = firestore;
   }
+  async getById(id){
+    const ref = await this.firestore.collection('fuelstops').doc(id)
+    const doc = await ref.get();
+    return doc.exists ? doc.data() : null;
+  }
+  async batchWrite(fuelstops){
+    const batch = this.firestore.batch();
+    for (const [id, fuelstop] of fuelstops) {
+      const ref = await this.firestore.collection('fuelstops').doc(id);
+      const doc = await ref.get();
+      if(!doc.exists){
+        batch.set(ref, fuelstop)
+      }
+    }
+    await batch.commit();
+  }
 }
 
 module.exports = FuelStopDB;
