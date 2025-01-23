@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto')
 
 function chop_left(char) {
     const string_value = this.valueOf();
@@ -41,9 +42,14 @@ function check_env(filepath) {
     })
 }
 
+function hash(string_value){
+    return crypto.createHash('md5').update(string_value).digest('hex');
+}
+
 module.exports = {
     check_env,
     chop_left,
     is_empty,
-    read_lines
+    read_lines,
+    hash
 }

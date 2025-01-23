@@ -1,4 +1,4 @@
-const { chop_left, is_empty, read_lines, check_env } = require("./utils");
+const { chop_left, is_empty, read_lines, check_env, hash } = require("./utils");
 
 describe('chop_left string utility', () => {
 
@@ -150,5 +150,23 @@ describe('check_env function', () => {
         check_env();
 
         expect(console.warn).toHaveBeenCalled();
+    })
+})
+
+describe('hash function', () => {
+    
+    const string_value = 'test';
+
+    it('should hash string value', () => {    
+        const result = hash(string_value);
+
+        expect(result).toBeDefined();
+    })
+
+    it('should return same hash for same input', () => {    
+        const result_1 = hash(string_value);
+        const result_2 = hash(string_value);
+
+        expect(result_1).toEqual(result_2);
     })
 })
