@@ -28,9 +28,9 @@ class SearchUseCase {
 
         result.data = [];
 
-        for (const [, fuel_stop] of this.fuel_solution.fuel_stops) {
+        for (const [id, fuel_stop] of this.fuel_solution.fuel_stops) {
 
-            let search_result = await this.fuel_stop_repo.findOne(fuel_stop);
+            let search_result = await this.fuel_stop_repo.findOne(id);
 
             if (!search_result) {
                  search_result = await this.places_service.findPlace(fuel_stop);
