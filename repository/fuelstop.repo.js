@@ -10,40 +10,11 @@ class FuelStopRepo {
         fuelStopValidator = new FuelStopValidator()
     ) {
         this.#_fuelStopDB = fuelStopDB;
-        this.fuelstops_collection = this.#_fuelStopDB.firestore && this.#_fuelStopDB.firestore.collection("fuelstops");
         this.fuelStopValidator = fuelStopValidator;
     }
-    async findOne(fuelstop) {
 
-        const { code, city, state, highway, exit } = fuelstop;
-        const snapshot = await this.fuelstops_collection
-            .where("exit", "==", exit)
-            .where("highway", "==", highway)
-            .where("city", "==", city)
-            .where("state", "==", state)
-            .where("code", "==", code)
-            .orderBy('exit')
-            .orderBy('highway')
-            .get();
-
-        if (snapshot.empty) {
-            console.warn('no matching fuel stops.');
-            return;
-        }
-
-        if (snapshot.size > 1) {
-            console.warn('more than one fuel stop found.');
-            return;
-        }
-
-        return snapshot.docs[0].data();
-    }
-
-    addOne(fuelstop) {
-        if (!this.fuelStopValidator.validate(fuelstop)) {
-            return Promise.reject(`fuel stop validation failed: ${JSON.stringify(fuelstop)}`)
-        }
-        return this.fuelstops_collection.add(fuelstop);
+    async findOne(fuelstopId) {
+        return this.#_fuelStopDB.getById(fuelstopId);
     }
 
     addMany(fuelstops) {
@@ -52,9 +23,7 @@ class FuelStopRepo {
                 return Promise.reject(`fuel stop validation failed: ${JSON.stringify(fuelstop)}`)
             }
         }
-        return Promise.all(fuelstops.map((fuelstop) => {
-            return this.fuelstops_collection.add(fuelstop);
-        }))
+        return this.#_fuelStopDB.batchWrite(fuelstops);
     }
 }
 
