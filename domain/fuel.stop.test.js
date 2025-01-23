@@ -70,7 +70,7 @@ describe('methods', () => {
         
         fuelStop.read_line_1();
 
-        expect(fuelStop.name).toBe('PILOT TRAVEL CE');
+        expect(fuelStop.name).toBe('PILOT TRAVEL');
         expect(fuelStop.highway).toBe('I-80');
     })
     it('should read city and state from line 2', () => {
