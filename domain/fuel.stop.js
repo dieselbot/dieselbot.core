@@ -1,4 +1,4 @@
-const { chop_left } = require("../common/utils");
+const { chop_left, hash } = require("../common/utils");
 
 class FuelStop {
     constructor(text_line_1, text_line_2) {
@@ -13,6 +13,11 @@ class FuelStop {
         this.website = '';
         this.map = '';
         this.search_phrase = '';
+    }
+
+    get id() {
+        const highway = this.highway.replace(/-/,'');
+        return hash(`${this.code}${this.exit || ''}${highway}${this.city}${this.state}`);
     }
 
     #_city = null;
