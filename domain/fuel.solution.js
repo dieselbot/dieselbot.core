@@ -13,7 +13,7 @@ class FuelSolution {
             if (/QTY:\s[A-Z|\d]+/.test(line)) {
                 const fuelStop = new FuelStop(line, lines[i + 1]);
                 fuelStop.read();
-                this.fuel_stops.set(i, fuelStop);
+                this.fuel_stops.set(fuelStop.id, fuelStop);
             }
         })
     }
