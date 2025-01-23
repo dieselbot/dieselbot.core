@@ -5,7 +5,7 @@ const Result = require('../domain/result');
 const globalEmitter = require('../common/global.emitter');
 
 class SearchUseCase {
-    #unlisted_fuel_stops = [];
+    #_unlisted_fuel_stops = [];
     constructor(
         fuel_solution = new FuelSolution(),
         places_service = new GooglePlacesService(),
@@ -35,7 +35,7 @@ class SearchUseCase {
             if (!search_result) {
                  search_result = await this.places_service.findPlace(fuel_stop);
                 if (search_result) {
-                    this.#unlisted_fuel_stops.push(search_result);
+                    this.#_unlisted_fuel_stops.push(search_result);
                 } else {
                     continue;
                 }
@@ -46,8 +46,8 @@ class SearchUseCase {
 
         if (result.data.length) {
             result.success = true;
-            if(this.#unlisted_fuel_stops.length){
-                globalEmitter.emit('insert:unlisted_fuel_stops', this.#unlisted_fuel_stops);
+            if(this.#_unlisted_fuel_stops.length){
+                globalEmitter.emit('insert:unlisted_fuel_stops', this.#_unlisted_fuel_stops);
             }
         } else {
             result.message = "no results found";
