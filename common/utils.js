@@ -46,10 +46,17 @@ function hash(string_value){
     return crypto.createHash('md5').update(string_value).digest('hex');
 }
 
+function get_fuel_stop_id(fuelstop){
+    const highway = fuelstop.highway.replace(/-/,'');
+    const { code, exit, city, state} = fuelstop;
+    return hash(`${code}${exit || ''}${highway}${city}${state}`);
+}
+
 module.exports = {
     check_env,
     chop_left,
     is_empty,
     read_lines,
-    hash
+    hash,
+    get_fuel_stop_id
 }
