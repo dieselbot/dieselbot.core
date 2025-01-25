@@ -7,4 +7,6 @@ class FuelSolutionError extends Error {
     }
 }
 
-module.exports = FuelSolutionError;
+module.exports = {
+    FuelSolutionError
+};
