@@ -18,7 +18,7 @@ class GooglePlacesAPI {
 
             if(res.ok){
                 const place_response = await res.json();
-                if(place_response.places){
+                if(place_response.places && place_response.places.length > 0){
                     result.success = true;
                     result.data = place_response.places;
                 } else {
