@@ -85,6 +85,10 @@ class FuelStop {
         this.search_phrase = `${this.name} ${this.city} ${this.state} ${this.highway}`;
     }
 
+    toString(){
+        return this.line_1.concat('\n', this.line_2)
+    }
+
 }
 
 module.exports = FuelStop;
