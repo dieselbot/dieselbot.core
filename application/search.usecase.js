@@ -22,6 +22,7 @@ class SearchUseCase {
         try {
             this.fuel_solution.read();
         } catch (error) {
+            result.error = error;
             result.message = error.message;
             return result;
         }
