@@ -1,4 +1,4 @@
-const { codes } = require('./constants.json');
+const { code } = require('./constants.json');
 const { is_empty } = require('./utils');
 
 class Validator {
@@ -20,7 +20,7 @@ class FuelStopValidator extends Validator {
     constructor(){
         super([
             (fuelStop) => !is_empty(fuelStop),
-            (fuelStop) => codes.includes(fuelStop.code),
+            (fuelStop) => code.includes(fuelStop.code),
             (fuelStop) => !is_empty(fuelStop.display_name),
             (fuelStop) => !is_empty(fuelStop.address),
             (fuelStop) => !is_empty(fuelStop.city),
