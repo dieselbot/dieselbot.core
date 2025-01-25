@@ -1,7 +1,7 @@
 const FuelStop = require('./fuel.stop.js');
 const { read_lines } = require('../common/utils.js');
 const regex = require('../common/regex.js');
-const FuelSolutionError = require('../common/fuel.solution.error.js');
+const { FuelSolutionError } = require('../common/errors.js');
 
 class FuelSolution {
     constructor(fuel_solution_text) {
