@@ -22,7 +22,7 @@ class GooglePlacesAPI {
                     result.success = true;
                     result.data = place_response.places;
                 } else {
-                    result.message = `no results found for query: "${text_query}"`
+                    result.message = `no results found for: "${text_query}"`
                 }
             } else {
                 result.message = res.statusText;

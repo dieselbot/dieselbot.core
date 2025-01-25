@@ -26,7 +26,7 @@ class GooglePlacesService {
         }
 
         if(result.data.length > 1){
-            console.warn(`multiple results found for query: "${search_text}"`);
+            console.warn(`multiple results found for: "${search_text}"`);
             return;
         }
 
