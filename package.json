@@ -21,5 +21,8 @@
     "@types/jest": "^29.5.14",
     "firebase-admin": "^13.0.2",
     "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "nock": "^14.0.0"
   }
 }
