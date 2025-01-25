@@ -14,7 +14,7 @@ class GooglePlacesService {
 
         if (!search_text) return;
 
-        const result = await this.#_placesAPI.textSearch(search_text);
+        let result = await this.#_placesAPI.textSearch(search_text);
 
         if(!result.success){
             console.warn(result.message);
@@ -22,7 +22,7 @@ class GooglePlacesService {
         }
 
         if (result.data.length > 1 && fuelstop.exit) {
-            result = await this.#_placesAPI.textSearch(search_text.concat(' ', fuelstop.exit));
+            result = await this.#_placesAPI.textSearch(search_text.concat(' exit ', fuelstop.exit));
         }
 
         if(result.data.length > 1){
