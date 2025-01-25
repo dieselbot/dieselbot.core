@@ -100,59 +100,6 @@ describe('read_lines function', () => {
     })
 })
 
-describe('check_env function', () => {
-    const fs = require('fs');
-    const path = require('path');
-
-    it('should use default file path when file path argument is undefined', () => {
-        jest.spyOn(fs, 'existsSync').mockReturnValue(false);
-        console.warn = jest.fn();
-        const default_file_path = path.join(__dirname, '../.env');
-        const input_file_path = undefined;
-
-        check_env(input_file_path);
-
-        expect(fs.existsSync).toHaveBeenCalledWith(default_file_path);
-    })
-    it('should use input file path when input file path is defined', () => {
-        jest.spyOn(fs, 'existsSync').mockReturnValue(false);
-        console.warn = jest.fn();
-        const input_file_path = 'x';
-
-        check_env(input_file_path);
-
-        expect(fs.existsSync).toHaveBeenCalledWith(input_file_path);
-    })
-    it('should warn when the file path does not exist', () => {
-        jest.spyOn(fs, 'existsSync').mockReturnValue(false);
-        jest.spyOn(console, 'warn');
-
-        check_env();
-
-        expect(console.warn).toHaveBeenCalled();
-    })
-    it('should warn when there is an error reading the file path', () => {
-        jest.spyOn(fs, 'existsSync').mockReturnValue(true);
-        jest.spyOn(fs, 'readFile').mockImplementation((path, encoding, callback) => callback(true));
-
-        check_env();
-
-        expect(console.warn).toHaveBeenCalled();
-    })
-    it('should warn when environment variable is undefined', () => {
-        const env_variable = 'x';
-        const file_data = `${env_variable}=`;
-        jest.spyOn(fs, 'readFile').mockImplementation((path, encoding, callback) => callback(false, file_data));
-        jest.spyOn(fs, 'existsSync').mockReturnValue(true);
-        jest.replaceProperty(process, 'env', { [env_variable]: undefined })
-        jest.spyOn(console, 'warn');
-
-        check_env();
-
-        expect(console.warn).toHaveBeenCalled();
-    })
-})
-
 describe('hash function', () => {
     
     const string_value = 'test';

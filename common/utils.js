@@ -23,25 +23,6 @@ function read_lines(text) {
                .filter(part => part.length > 1);
 }
 
-function check_env(filepath) {
-    const env_path = filepath ? filepath: path.join(__dirname, '../.env');
-    if(!fs.existsSync(env_path)) {
-        console.warn('.env file missing!');
-        return;
-    }
-    fs.readFile(env_path, 'utf8', (err, data) => {
-        if (err) {
-            console.warn(err);
-            return;
-        }
-        read_lines(data)
-            .map(line => line.substring(0, line.indexOf('=')))
-            .forEach(key => {
-                if(!process.env[key]) console.warn(`${key} not defined.`);
-            })
-    })
-}
-
 function hash(string_value){
     return crypto.createHash('md5').update(string_value).digest('hex');
 }
@@ -53,7 +34,6 @@ function get_fuel_stop_id(fuelstop){
 }
 
 module.exports = {
-    check_env,
     chop_left,
     is_empty,
     read_lines,
