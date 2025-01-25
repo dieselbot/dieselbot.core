@@ -1,7 +1,8 @@
 const fetch = require('node-fetch');
+const Result = require('../domain/result');
 
 class GooglePlacesAPI { 
-    textSearch(textQuery){
+    textSearch(text_query){
         return fetch('https://places.googleapis.com/v1/places:searchText',{
             method: 'POST',
             headers: {
@@ -10,13 +11,24 @@ class GooglePlacesAPI {
                 'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.websiteUri,places.googleMapsUri'
             },
             body: JSON.stringify({
-                "textQuery" : textQuery
+                "textQuery" : text_query
             })
-        }).then(res => {
+        }).then(async res => {
+            const result = new Result();
+
             if(res.ok){
-                return res.json();
+                const place_response = await res.json();
+                if(place_response.places){
+                    result.success = true;
+                    result.data = place_response.places;
+                } else {
+                    result.message = `no results found for query: "${text_query}"`
+                }
+            } else {
+                result.message = res.statusText;
             }
-            throw res.statusText;
+
+            return result;
         })
     }
 }
