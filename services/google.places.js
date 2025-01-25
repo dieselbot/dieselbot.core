@@ -10,41 +10,35 @@ class GooglePlacesService {
 
     async findPlace(fuelstop) {
 
-        const searchText = fuelstop.search_phrase;
+        const search_text = fuelstop.search_phrase;
 
-        if (!searchText) return;
+        if (!search_text) return;
 
-        let placeResponse = await this.#_placesAPI.textSearch(searchText);
+        const result = await this.#_placesAPI.textSearch(search_text);
 
-        const warning = `multiple results found for query: "${searchText}"`;
-
-        if (placeResponse.places && placeResponse.places.length > 1) {
-            if(fuelstop.exit){
-                placeResponse = await this.#_placesAPI.textSearch(`${searchText} ${fuelstop.exit}`);
-            } else {
-                console.warn(warning);
-                return;
-            }
-        }
-
-        if (placeResponse.places && placeResponse.places.length > 1) {
-            console.warn(warning);
+        if(!result.success){
+            console.warn(result.message);
             return;
         }
 
-        if (placeResponse.places && placeResponse.places.length == 1) {
-            const place = placeResponse.places[0];
-            const { code, city, state, highway, exit } = fuelstop;
-            return {
-                display_name: place.displayName.text,
-                address: place.formattedAddress,
-                code, city, state, highway, exit,
-                website: place.websiteUri,
-                map: place.googleMapsUri
-            };
+        if (result.data.length > 1 && fuelstop.exit) {
+            result = await this.#_placesAPI.textSearch(search_text.concat(' ', fuelstop.exit));
         }
 
-        console.warn(`no results found for query: "${searchText}"`);
+        if(result.data.length > 1){
+            console.warn(`multiple results found for query: "${search_text}"`);
+            return;
+        }
+
+        const place = result.data[0];
+        const { code, city, state, highway, exit } = fuelstop;
+        return {
+            display_name: place.displayName.text,
+            address: place.formattedAddress,
+            code, city, state, highway, exit,
+            website: place.websiteUri,
+            map: place.googleMapsUri
+        };
 
     }
 }
