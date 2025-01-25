@@ -3,7 +3,7 @@ const FuelStopRepo = require('../repository/fuelstop.repo');
 const FuelSolution = require('../domain/fuel.solution');
 const Result = require('../domain/result');
 const globalEmitter = require('../common/global.emitter');
-const { found } = require('../common/constants.json')
+const { found, search } = require('../common/constants.json')
 
 class SearchUseCase {
     #_unlisted_fuel_stops = [];
@@ -27,6 +27,8 @@ class SearchUseCase {
             result.message = error.message;
             return result;
         }
+
+        globalEmitter.emit(search.did_begin);
 
         result.data = [];
 
