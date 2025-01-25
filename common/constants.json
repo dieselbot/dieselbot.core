@@ -1,8 +1,11 @@
 {
-    "codes": [
+    "code": [
         "flying",
         "love",
         "petro",
         "pilot"
-    ]
+    ],
+    "found": {
+        "unlisted_fuel_stops": "found:unlisted_fuel_stops"
+    }
 }
