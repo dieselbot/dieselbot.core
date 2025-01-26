@@ -20,6 +20,7 @@
   "dependencies": {
     "@types/jest": "^29.5.14",
     "firebase-admin": "^13.0.2",
+    "handlebars": "^4.7.8",
     "node-fetch": "^2.7.0"
   },
   "devDependencies": {
