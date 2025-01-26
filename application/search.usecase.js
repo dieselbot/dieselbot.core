@@ -28,8 +28,6 @@ class SearchUseCase {
             return result;
         }
 
-        globalEmitter.emit(search.did_begin);
-
         result.data = [];
 
         for (const [id, fuel_stop] of this.fuel_solution.fuel_stops) {
