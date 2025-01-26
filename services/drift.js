@@ -1,4 +1,5 @@
 const DriftAPI = require("../infrastructure/drift.api");
+const { search_results } = require('../templates/index.js');
 
 class DriftService {
 
@@ -7,12 +8,8 @@ class DriftService {
     constructor(driftAPI = new DriftAPI()) {
         this.#_driftAPI = driftAPI
     }
-    send(conversation_id, fuelstops) {
-        let message = ``;
-        for (const fuelstop of fuelstops) {
-            message = message.concat(`<p><b>${fuelstop.display_name}</b><br/>${fuelstop.address}</p><br/>`)
-        }
-        message = message.substring(0, message.lastIndexOf('<br/>'))
+    send(conversation_id, fuel_stops) {
+        const message = search_results({ fuel_stops });
         return this.write(conversation_id, message);
     }
     write(conversation_id, message) {
