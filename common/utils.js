@@ -1,6 +1,8 @@
-const path = require('path');
-const fs = require('fs');
-const crypto = require('crypto')
+const crypto = require('crypto');
+
+function collapse(){
+    return this.replace(/\s+/g, ' ').trim();
+}
 
 function chop_left(char) {
     const string_value = this.valueOf();
@@ -35,6 +37,7 @@ function get_fuel_stop_id(fuelstop){
 
 module.exports = {
     chop_left,
+    collapse,
     is_empty,
     read_lines,
     hash,
