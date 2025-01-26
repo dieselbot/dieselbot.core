@@ -1,0 +1,10 @@
+{{#if fuel_stops.length == 1}}
+    <p>no results found for "{{this[0]}}"</p>
+{{else}}
+    <div>
+        <p>no results found for:</p><br />
+        {{#each fuel_stops}}
+            <p>{{this}}</p>
+        {{/each}}
+    </div>
+{{/if}}
