@@ -5,6 +5,6 @@ module.exports = {
     exit_number: /\d+.*/,
     state: /^[A-Z]{2}$/,
     state_code: /^(AK|AL|AR|AZ|CA|CO|CT|DE|FL|GA|HI|IA|ID|IL|IN|KS|KY|LA|MA|MD|ME|MI|MN|MO|MS|MT|NC|ND|NE|NH|NJ|NM|NV|NY|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VA|VT|WA|WI|WV|WY)$/,
-    blank_line: /LOAD#:|(^QTY|^EX)/,
+    skip_line: /LOAD#:|(^QTY|^EX)/,
     new_line: /\n/
 }
