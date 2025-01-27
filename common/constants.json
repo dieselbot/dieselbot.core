@@ -7,8 +7,5 @@
     ],
     "found": {
         "unlisted_fuel_stops": "found:unlisted_fuel_stops"
-    },
-    "search": {
-        "did_begin": "search:did_begin"
     }
 }
