@@ -1,7 +1,9 @@
 <b>Whoops!</b>
-<p>Please review your fuel solution.</p>
-{{#each errors}}
-    <p>{{this}}</p>
-{{/each}}
+<p>{{error_message}}</p>
+{{#if errors}}
+    {{#each errors}}
+        <p>{{this}}</p>
+    {{/each}}
+{{/if}}
 <br/>
 <p>For more details, visit the <a href="{{wiki}}">help page</a>.</p>
