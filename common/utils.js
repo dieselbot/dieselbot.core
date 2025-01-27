@@ -21,7 +21,7 @@ function is_empty(value) {
 
 function read_lines(text) {
     return text.trim().split('\n')
-               .map(part => part.trim())
+               .map(part => collapse.call(part.trim()))
                .filter(part => part.length > 1);
 }
 
