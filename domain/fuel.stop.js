@@ -25,7 +25,7 @@ class FuelStop {
     #_name = null;
 
     set city(value) {
-        this.#_city = value.chop_left('/');
+        this.#_city = value.chop_left();
     }
     get city() { return this.#_city; }
 
@@ -38,7 +38,7 @@ class FuelStop {
                 this.#_name = "PILOT TRAVEL";
                 return;
             default:
-                this.#_name = value.chop_left('/');
+                this.#_name = value.chop_left();
         }
     }
     get name() { return this.#_name; }
