@@ -3,6 +3,7 @@ const { read_lines } = require('../common/utils.js');
 const regex = require('../common/regex.js');
 const { FuelSolutionError } = require('../common/errors.js');
 const { Line1Validator, Line2Validator } = require('../common/validators.js')
+const { fuel_solution } = require("../common/constants.json")
 
 class FuelSolution {
     constructor(fuel_solution_text) {
@@ -13,7 +14,7 @@ class FuelSolution {
 
     #_validate() {
         const invalid_fuel_solution = new Error('invalid fuel solution');
-        if (!/\n/.test(this.text) || this.text.length > 400) throw invalid_fuel_solution;
+        if (!/\n/.test(this.text) || this.text.length > fuel_solution.max_length) throw invalid_fuel_solution;
 
         const errors = [];
         this.lines = read_lines(this.text).filter(line => {
