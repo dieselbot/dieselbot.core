@@ -1,4 +1,4 @@
-const { Validator, FuelStopValidator } = require("./validators");
+const { Validator, FuelStopValidator, Line1Validator } = require("./validators");
 
 describe('validator', () => {
     let validator;
@@ -113,4 +113,50 @@ describe('fuel stop validator', () => {
 
         expect(result).toBe(true);
     })
+})
+
+describe('line 1 validator', () => {
+    const validator = new Line1Validator();
+
+    it('should error when line 1 is empty', () => {
+        const line_1_text = undefined;
+        expect(() => {
+            validator.validate(line_1_text)
+        }).toThrow('missing line 1');
+    })
+
+    it('should error when highway is missing', () => {
+        const line_1_text = 'LOVES COUNTRY';
+        expect(() => {
+            validator.validate(line_1_text)
+        }).toThrow(`missing highway: "${line_1_text}"`);
+    })
+
+    it('should error when highway prefix is missing', () => {
+        const line_1_text = 'LOVES COUNTRY 20';
+        expect(() => {
+            validator.validate(line_1_text)
+        }).toThrow(`missing highway: "${line_1_text}"`);
+    })
+
+    it('should error when highway number is missing', () => {
+        const line_1_text = 'LOVES COUNTRY I';
+        expect(() => {
+            validator.validate(line_1_text)
+        }).toThrow(`missing highway: "${line_1_text}"`);
+    })
+
+    it('should error when name is missing', () => {
+        const line_1_text = 'I 20';
+        expect(() => {
+            validator.validate(line_1_text)
+        }).toThrow(`missing name: "${line_1_text}"`);
+    })
+
+    it('should return true when name and highway are present', () => {
+        const line_1_text = 'LOVES COUNTRY I 20';
+        const result = validator.validate(line_1_text);
+        expect(result).toBe(true);
+    })
+    
 })
