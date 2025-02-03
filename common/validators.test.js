@@ -1,4 +1,4 @@
-const { Validator, FuelStopValidator, Line1Validator } = require("./validators");
+const { Validator, FuelStopValidator, Line1Validator, Line2Validator } = require("./validators");
 
 describe('validator', () => {
     let validator;
@@ -159,4 +159,31 @@ describe('line 1 validator', () => {
         expect(result).toBe(true);
     })
     
+})
+
+describe('line 2 validator', () => {
+    const validator = new Line2Validator();
+    it('should error when line 2 is empty', () => {
+        const line_2_text = undefined;
+        expect(() => {
+            validator.validate(line_2_text)
+        }).toThrow('missing line 2');
+    })
+    it('should error when city is missing', () => {
+        const line_2_text = 'CT';
+        expect(() => {
+            validator.validate(line_2_text)
+        }).toThrow(`missing city: "${line_2_text}"`);
+    })
+    it('should error when state is missing', () => {
+        const line_2_text = 'WILLINGTON';
+        expect(() => {
+            validator.validate(line_2_text)
+        }).toThrow(`missing state: "${line_2_text}"`);
+    })
+    it('should return true when city and state are present', () => {
+        const line_2_text = 'WILLINGTON CT';
+        const result = validator.validate(line_2_text);
+        expect(result).toBe(true);
+    })
 })
