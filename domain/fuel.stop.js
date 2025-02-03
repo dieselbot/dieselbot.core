@@ -63,7 +63,7 @@ class FuelStop {
     read_line_1() {
         const exec_result = regex.line_1.exec(this.line_1);
         this.name = this.line_1.substring(0, exec_result.index).trim();
-        this.highway = exec_result[0].replace(' ', '-').trim();
+        this.highway = exec_result[0].trim().replace(' ', '-').trim();
     }
 
     read_line_2() {
