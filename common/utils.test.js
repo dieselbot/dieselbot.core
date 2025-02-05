@@ -1,4 +1,4 @@
-const { chop_left, is_empty, read_lines, check_env, hash } = require("./utils");
+const { chop_left, is_empty, read_lines, hash, collapse, trimAll } = require("./utils");
 
 describe('chop_left string utility', () => {
 
@@ -115,5 +115,31 @@ describe('hash function', () => {
         const result_2 = hash(string_value);
 
         expect(result_1).toEqual(result_2);
+    })
+})
+
+describe('collapse function', () => {
+    it('should replace all spaces with a single space', () => {
+        const input_string = 'a      b';
+        const result = collapse.call(input_string);
+        expect(result).toBe('a b');
+    })
+    it('should remove leading spaces', () => {
+        const input_string = '   a      b';
+        const result = collapse.call(input_string);
+        expect(result).toBe('a b');
+    })
+    it('should remove trailing spaces', () => {
+        const input_string = 'a      b   ';
+        const result = collapse.call(input_string);
+        expect(result).toBe('a b');
+    })
+})
+
+describe('trimAll function', () => {
+    it('should remove all spaces', () => {
+        const input_string = '    a      b     ';
+        const result = trimAll.call(input_string);
+        expect(result).toBe('ab');
     })
 })
