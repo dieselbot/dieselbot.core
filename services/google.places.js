@@ -25,9 +25,10 @@ class GooglePlacesService {
             result = await this.#_placesAPI.textSearch(search_text.concat(' exit ', fuelstop.exit));
         }
 
-        if(result.data.length > 1){
-            console.warn(`multiple results found for: "${search_text}"`);
-            return;
+        const count = result.data.length;
+
+        if(count > 1){
+            console.warn(`${count} results found for: "${search_text}"`);
         }
 
         const place = result.data[0];
