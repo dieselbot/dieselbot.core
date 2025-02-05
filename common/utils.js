@@ -4,6 +4,10 @@ function collapse(){
     return this.replace(/\s+/g, ' ').trim();
 }
 
+function trimAll(){
+    return this.replace(/\s+/g, '');
+}
+
 function chop_left(char = "/") {
     const string_value = this.valueOf();
     if (!char) return string_value;
@@ -32,12 +36,13 @@ function hash(string_value){
 function get_fuel_stop_id(fuelstop){
     const highway = /\d+/.exec(fuelstop.highway)[0];
     const { code, exit, city, state} = fuelstop;
-    return hash(`${code}${exit || ''}${highway}${city}${state}`);
+    return hash(trimAll.call(`${code}${exit || ''}${highway}${city}${state}`));
 }
 
 module.exports = {
     chop_left,
     collapse,
+    trimAll,
     is_empty,
     read_lines,
     hash,
