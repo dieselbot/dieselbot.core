@@ -31,7 +31,7 @@ class FuelStop {
 
     set name(value) {
         switch (true){
-            case /LOVES #/.test(value):
+            case /LOVES/.test(value):
                 this.#_name = "LOVES TRAVEL";
                 return;
             case /PILOT TRAVEL CE/.test(value):
