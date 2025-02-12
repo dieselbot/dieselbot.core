@@ -35,7 +35,7 @@ class GooglePlacesService {
         const { code, city, state, highway, exit } = fuelstop;
         return {
             display_name: place.displayName.text,
-            address: place.formattedAddress,
+            address: place.formattedAddress.replace(/,\sUSA$/, ''),
             code, city, state, highway, exit,
             website: place.websiteUri,
             map: place.googleMapsUri
