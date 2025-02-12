@@ -37,8 +37,7 @@ class GooglePlacesService {
             display_name: place.displayName.text,
             address: place.formattedAddress.replace(/,\sUSA$/, ''),
             code, city, state, highway, exit,
-            website: place.websiteUri,
-            map: place.googleMapsUri
+            place_id: place.id
         };
 
     }
