@@ -14,9 +14,8 @@ class FuelStop {
         this.state = '';
         this.highway = '';
         this.exit = null;
-        this.website = '';
-        this.map = '';
         this.search_phrase = '';
+        this.place_id = '';
     }
 
     get id() { return get_fuel_stop_id(this); }
