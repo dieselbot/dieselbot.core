@@ -1,5 +1,9 @@
 <b>Hmmm...</b>
 <p>No results for:</p>
 {{#each fuel_stops}}
-    <p>{{this}}</p>
+    {{#if @index}} 
+        <br>
+    {{/if}}
+    <i>{{line_1}}<br>
+    <i>{{line_2}}</i>
 {{/each}}
