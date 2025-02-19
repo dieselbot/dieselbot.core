@@ -17,6 +17,10 @@ class FuelStopRepo {
         return this.#_fuelStopDB.getById(fuelstopId);
     }
 
+    async findMany(...ids) {
+        return this.#_fuelStopDB.getByIds(ids);
+    }
+
     addMany(fuelstops) {
         for (const fuelstop of fuelstops) {
             if (!this.fuelStopValidator.validate(fuelstop)) {
