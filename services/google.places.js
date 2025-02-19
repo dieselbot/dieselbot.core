@@ -21,10 +21,6 @@ class GooglePlacesService {
             return;
         }
 
-        if (result.data.length > 1 && fuelstop.exit) {
-            result = await this.#_placesAPI.textSearch(search_text.concat(' exit ', fuelstop.exit));
-        }
-
         const count = result.data.length;
 
         if(count > 1){
