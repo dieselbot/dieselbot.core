@@ -1,20 +1,12 @@
-const GooglePlacesService = require('../services/google.places');
-const FuelStopRepo = require('../repository/fuelstop.repo');
 const FuelSolution = require('../domain/fuel.solution');
 const SearchResult = require('../domain/search.result');
 const globalEmitter = require('../common/global.emitter');
-const { found } = require('../common/constants.json')
+const { found } = require('../common/constants.json');
+const { RepoSearchHandler, PlaceSearchHandler } = require('./search.handlers');
 
 class SearchUseCase {
-    #_unlisted_fuel_stops = [];
-    constructor(
-        fuel_solution = new FuelSolution(),
-        places_service = new GooglePlacesService(),
-        fuel_stop_repo = new FuelStopRepo()
-    ) {
+    constructor(fuel_solution = new FuelSolution()) {
         this.fuel_solution = fuel_solution;
-        this.places_service = places_service;
-        this.fuel_stop_repo = fuel_stop_repo;
     }
 
     async execute() {
@@ -28,29 +20,24 @@ class SearchUseCase {
             return result;
         }
 
-        result.data = [];
+        const search_context = {
+            fuel_stops: this.fuel_solution.fuel_stops,
+            found: null,
+            unlisted: [],
+            not_found: null
+        };
 
-        for (const [id, fuel_stop] of this.fuel_solution.fuel_stops) {
+        const searchRepo = new RepoSearchHandler();
+        searchRepo.setNextHandler(new PlaceSearchHandler());
+        await searchRepo.handle(search_context);
 
-            let search_result = await this.fuel_stop_repo.findOne(id);
+        result.data = search_context.found.concat(search_context.unlisted);
+        result.not_found = search_context.not_found;
 
-            if (!search_result) {
-                search_result = await this.places_service.findPlace(fuel_stop);
-                if (search_result) {
-                    this.#_unlisted_fuel_stops.push(search_result);
-                } else {
-                    result.not_found.push(fuel_stop);
-                    continue;
-                }
-            }
-
-            result.data.push(search_result);
-        }
-
-        if (result.data.length) {
+        if (result.data.length > 0) {
             result.success = true;
-            if (this.#_unlisted_fuel_stops.length) {
-                globalEmitter.emit(found.unlisted_fuel_stops, this.#_unlisted_fuel_stops);
+            if (search_context.unlisted.length > 0) {
+                globalEmitter.emit(found.unlisted_fuel_stops, search_context.unlisted);
             }
         } else {
             result.message = "no results found";
