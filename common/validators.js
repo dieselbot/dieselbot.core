@@ -31,12 +31,14 @@ class FuelStopValidator extends Validator {
     }
 }
 
+String.prototype.collapse = collapse;
+
 class FuelSolutionValidator extends Validator {
     constructor() {
-        const default_error = new Error('please input a valid fuel solution');
+        const default_error = new Error('invalid fuel solution');
         super([
             (text) => {
-                if (!text) throw new Error('missing fuel solution text')
+                if (!text.trim()) throw new Error('missing fuel solution text')
                 if (!/\n/.test(text)) {
                     throw default_error;
                 }
@@ -84,8 +86,6 @@ class Line1Validator extends Validator {
         ])
     }
 }
-
-String.prototype.collapse = collapse;
 
 class Line2Validator extends Validator {
     constructor() {
