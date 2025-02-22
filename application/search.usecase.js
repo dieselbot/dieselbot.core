@@ -22,7 +22,7 @@ class SearchUseCase {
 
         const search_context = {
             fuel_stops: this.fuel_solution.fuel_stops,
-            found: null,
+            found: [],
             unlisted: [],
             not_found: null
         };
