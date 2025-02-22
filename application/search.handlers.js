@@ -35,13 +35,13 @@ class PlaceSearchHandler extends SearchHandler {
     constructor(places_service = new GooglePlacesService()) {
         super();
         this.places_service = places_service;
-        this.fuelStopValidator = new FuelStopValidator();
     }
     async handle(context) {
         if (context.fuel_stops.size == 0) return await super.handle(context);
+        const fuelStopValidator = new FuelStopValidator();
         for (const [id, fuel_stop] of context.fuel_stops) {
             const unlisted_fuel_stop = await this.places_service.findPlace(fuel_stop);
-            if (this.fuelStopValidator.validate(unlisted_fuel_stop)) {
+            if (fuelStopValidator.validate(unlisted_fuel_stop)) {
                 context.found.set(id, unlisted_fuel_stop);
                 context.unlisted.push(unlisted_fuel_stop);
                 context.fuel_stops.delete(id);
@@ -49,8 +49,8 @@ class PlaceSearchHandler extends SearchHandler {
         }
         if (context.fuel_stops.size > 0) {
             context.not_found = Array.from(context.fuel_stops.values());
-            context.not_found.forEach(fuel_stop => { 
-                context.found.delete(fuel_stop.id) 
+            context.not_found.forEach(fuel_stop => {
+                context.found.delete(fuel_stop.id);
             });
         }
         await super.handle(context);
