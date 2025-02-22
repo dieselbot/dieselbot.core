@@ -1,6 +1,6 @@
-const { code } = require('./constants.json');
+const { code, fuel_solution } = require('./constants.json');
+const { is_empty, collapse, read_lines } = require('./utils');
 const regex = require('../common/regex');
-const { is_empty, collapse } = require('./utils');
 
 class Validator {
     constructor(handlers = []) {
@@ -27,6 +27,39 @@ class FuelStopValidator extends Validator {
             (fuelStop) => !is_empty(fuelStop.city),
             (fuelStop) => (!is_empty(fuelStop.state) && fuelStop.state.length == 2
                 && (new RegExp(`${fuelStop.state}.*\\d+`, 'g')).test(fuelStop.address))
+        ])
+    }
+}
+
+class FuelSolutionValidator extends Validator {
+    constructor() {
+        const default_error = new Error('please input a valid fuel solution');
+        super([
+            (text) => {
+                if (!text) throw new Error('missing fuel solution text')
+                if (!/\n/.test(text)) {
+                    throw default_error;
+                }
+                return true;
+            },
+            (text) => {
+                const maxlen = fuel_solution.max_length;
+                if (text.length > maxlen) {
+                    throw new Error(`fuel solution text must be less than ${maxlen} characters`);
+                }
+                return true;
+            },
+            (text) => {
+                const lines = read_lines(text).filter(line => {
+                    return !regex.skip_line.test(line.collapse());
+                })
+                if (!Number.isInteger(lines.length / 2) ||
+                    lines.every(line => !regex.line_1.test(line) && !regex.line_2.test(line))) {
+                    throw default_error;
+                }
+                this.text_lines = lines;
+                return true;
+            }
         ])
     }
 }
@@ -85,9 +118,28 @@ class Line2Validator extends Validator {
     }
 }
 
+class LineValidator {
+    constructor() {
+        this.line1Validator = new Line1Validator();
+        this.line2Validator = new Line2Validator();
+        this.validator = this.line1Validator;
+    }
+    toggle() {
+        this.validator = (
+            this.validator instanceof Line1Validator
+                ? this.line2Validator : this.line1Validator
+        )
+    }
+    validate(line_text) {
+        this.validator.validate(line_text)
+    }
+}
+
 module.exports = {
     Validator,
+    FuelSolutionValidator,
     FuelStopValidator,
+    LineValidator,
     Line1Validator,
     Line2Validator
 }
