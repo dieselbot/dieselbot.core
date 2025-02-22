@@ -28,20 +28,21 @@ class SearchUseCase {
         };
 
         const searchRepo = new RepoSearchHandler();
-        searchRepo.setNextHandler(new PlaceSearchHandler());
+              searchRepo.setNextHandler(new PlaceSearchHandler());
         await searchRepo.handle(search_context);
 
         result.data = Array.from(search_context.found.values());
         result.not_found = search_context.not_found;
 
         if (result.data.length > 0) {
-            result.success = true;
             if (search_context.unlisted.length > 0) {
                 globalEmitter.emit(found.unlisted_fuel_stops, search_context.unlisted);
             }
         } else {
             result.message = "no results found";
         }
+
+        result.success = true;
 
         return result;
     }
