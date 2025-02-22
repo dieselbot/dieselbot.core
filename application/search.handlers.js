@@ -21,9 +21,10 @@ class RepoSearchHandler extends SearchHandler {
     }
     async handle(context) {
         const fuel_stop_ids = Array.from(context.fuel_stops.keys());
+        context.found = new Map(fuel_stop_ids.map(id => [id, null]));
         const fuel_stops = await this.fuel_stop_repo.findMany(...fuel_stop_ids);
         fuel_stops.forEach((fuel_stop, id) => {
-            context.found.push(fuel_stop);
+            context.found.set(id, fuel_stop);
             context.fuel_stops.delete(id);
         })
         await super.handle(context);
@@ -41,12 +42,16 @@ class PlaceSearchHandler extends SearchHandler {
         for (const [id, fuel_stop] of context.fuel_stops) {
             const unlisted_fuel_stop = await this.places_service.findPlace(fuel_stop);
             if (this.fuelStopValidator.validate(unlisted_fuel_stop)) {
+                context.found.set(id, unlisted_fuel_stop);
                 context.unlisted.push(unlisted_fuel_stop);
                 context.fuel_stops.delete(id);
             }
         }
         if (context.fuel_stops.size > 0) {
             context.not_found = Array.from(context.fuel_stops.values());
+            context.not_found.forEach(fuel_stop => { 
+                context.found.delete(fuel_stop.id) 
+            });
         }
         await super.handle(context);
     }

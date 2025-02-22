@@ -22,7 +22,7 @@ class SearchUseCase {
 
         const search_context = {
             fuel_stops: this.fuel_solution.fuel_stops,
-            found: [],
+            found: null,
             unlisted: [],
             not_found: null
         };
@@ -31,7 +31,7 @@ class SearchUseCase {
         searchRepo.setNextHandler(new PlaceSearchHandler());
         await searchRepo.handle(search_context);
 
-        result.data = search_context.found.concat(search_context.unlisted);
+        result.data = Array.from(search_context.found.values());
         result.not_found = search_context.not_found;
 
         if (result.data.length > 0) {
