@@ -32,16 +32,17 @@ class RepoSearchHandler extends SearchHandler {
 }
 
 class PlaceSearchHandler extends SearchHandler {
-    constructor(places_service = new GooglePlacesService()) {
+    constructor(places_service = new GooglePlacesService(),
+                fs_validator = new FuelStopValidator()) {
         super();
         this.places_service = places_service;
+        this.fs_validator = fs_validator;
     }
     async handle(context) {
         if (context.fuel_stops.size == 0) return await super.handle(context);
-        const fuelStopValidator = new FuelStopValidator();
         for (const [id, fuel_stop] of context.fuel_stops) {
             const unlisted_fuel_stop = await this.places_service.findPlace(fuel_stop);
-            if (fuelStopValidator.validate(unlisted_fuel_stop)) {
+            if (this.fs_validator.validate(unlisted_fuel_stop)) {
                 context.found.set(id, unlisted_fuel_stop);
                 context.unlisted.push(unlisted_fuel_stop);
                 context.fuel_stops.delete(id);
