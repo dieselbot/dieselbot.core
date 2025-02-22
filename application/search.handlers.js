@@ -1,5 +1,6 @@
 const FuelStopRepo = require('../repository/fuelstop.repo');
 const GooglePlacesService = require('../services/google.places');
+const { FuelStopValidator } = require('../common/validators');
 
 class SearchHandler {
     #nextHandler;
@@ -33,12 +34,13 @@ class PlaceSearchHandler extends SearchHandler {
     constructor(places_service = new GooglePlacesService()) {
         super();
         this.places_service = places_service;
+        this.fuelStopValidator = new FuelStopValidator();
     }
     async handle(context) {
         if (context.fuel_stops.size == 0) return await super.handle(context);
         for (const [id, fuel_stop] of context.fuel_stops) {
             const unlisted_fuel_stop = await this.places_service.findPlace(fuel_stop);
-            if (unlisted_fuel_stop) {
+            if (this.fuelStopValidator.validate(unlisted_fuel_stop)) {
                 context.unlisted.push(unlisted_fuel_stop);
                 context.fuel_stops.delete(id);
             }
