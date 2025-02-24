@@ -34,12 +34,8 @@ class SearchUseCase {
         result.data = Array.from(search_context.found.values());
         result.not_found = search_context.not_found;
 
-        if (result.data.length > 0) {
-            if (search_context.unlisted.length > 0) {
-                globalEmitter.emit(found.unlisted_fuel_stops, search_context.unlisted);
-            }
-        } else {
-            result.message = "no results found";
+        if (search_context.unlisted.length > 0) {
+            globalEmitter.emit(found.unlisted_fuel_stops, search_context.unlisted);
         }
 
         result.success = true;
