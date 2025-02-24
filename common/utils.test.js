@@ -1,4 +1,9 @@
-const { chop_left, is_empty, read_lines, hash, collapse, trimAll } = require("./utils");
+const { 
+    chop_left, is_empty, read_lines, hash,
+    collapse, trimAll, get_fuel_stop_id
+ } = require("./utils");
+
+const { get_fuel_stop } = require('../test/helpers');
 
 describe('chop_left string utility', () => {
 
@@ -141,5 +146,15 @@ describe('trimAll function', () => {
         const input_string = '    a      b     ';
         const result = trimAll.call(input_string);
         expect(result).toBe('ab');
+    })
+})
+
+describe('get_fuel_stop_id function', () => {
+    it('should form hash from fuel stop object', () => {
+        const fuel_stop = get_fuel_stop();
+
+        const hash = get_fuel_stop_id(fuel_stop);
+
+        expect(hash).toBeDefined();
     })
 })
