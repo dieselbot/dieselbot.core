@@ -1,4 +1,5 @@
 const { Validator, FuelStopValidator, Line1Validator, Line2Validator } = require("./validators");
+const { get_fuel_stop } = require('../test/helpers');
 
 describe('validator', () => {
     let validator;
@@ -28,15 +29,6 @@ describe('validator', () => {
 
 describe('fuel stop validator', () => {
     let fuel_stop_validator;
-
-    const get_fuel_stop = () => ({
-        code: 'petro', 
-        display_name: '-',
-        address: '0000 N Test Rd, TestCity, XX 00000',
-        city: '-',
-        state: 'XX',
-        highway: '-'
-    })
 
     beforeEach(() => {
         fuel_stop_validator = new FuelStopValidator();
