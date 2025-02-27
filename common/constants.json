@@ -3,7 +3,10 @@
         "flying",
         "love",
         "petro",
-        "pilot"
+        "pilot",
+        "ranger",
+        "gomart",
+        "other"
     ],
     "found": {
         "unlisted_fuel_stops": "found:unlisted_fuel_stops"

@@ -6,8 +6,8 @@ String.prototype.chop_left = chop_left;
 
 class FuelStop {
     constructor(text_line_1, text_line_2) {
-        if(!text_line_1) throw new Error('missing line 1');
-        if(!text_line_2) throw new Error('missing line 2');
+        if (!text_line_1) throw new Error('missing line 1');
+        if (!text_line_2) throw new Error('missing line 2');
         this.line_1 = text_line_1.collapse();
         this.line_2 = text_line_2.collapse();
         this.city = '';
@@ -29,7 +29,7 @@ class FuelStop {
     get city() { return this.#_city; }
 
     set name(value) {
-        switch (true){
+        switch (true) {
             case /LOVES/.test(value):
                 this.#_name = "LOVES TRAVEL";
                 return;
@@ -37,7 +37,7 @@ class FuelStop {
                 this.#_name = "PILOT TRAVEL";
                 return;
             default:
-                this.#_name = value.chop_left();
+                this.#_name = value.chop_left().replace(/#.*$/, '').trim();
         }
     }
     get name() { return this.#_name; }
@@ -52,10 +52,14 @@ class FuelStop {
                 return "flying";
             case /petro/gi.test(this.#_name):
                 return "petro";
+            case /ranger/gi.test(this.#_name):
+                return "ranger";
+            case /gomart|go-mart|go\smart/gi.test(this.#_name):
+                return "gomart";
             case /(tulsa terminal|laredo terminal)/gi.test(this.#_name):
                 return "melton";
             default:
-                return null;
+                return "other";
         }
     }
 
@@ -84,7 +88,7 @@ class FuelStop {
         this.search_phrase = `${this.name} ${this.city} ${this.state} ${this.highway}`;
     }
 
-    toString(){
+    toString() {
         return this.line_1.concat('\n', this.line_2)
     }
 
