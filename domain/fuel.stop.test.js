@@ -48,9 +48,9 @@ describe('members', () => {
 
         expect(fuelStop.code).toBe(code);
     })
-    it('should set null code for unsupported name', () => {
+    it('should set default code for unrecognized name', () => {
         fuelStop.name = "x";
-        expect(fuelStop.code).toBeNull();
+        expect(fuelStop.code).toBe("other");
     })
 })
 

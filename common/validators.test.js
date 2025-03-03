@@ -1,5 +1,5 @@
 const { Validator, FuelStopValidator, Line1Validator, Line2Validator } = require("./validators");
-const { get_fuel_stop } = require('../test/helpers');
+const FuelStopBuilder = require('../test.utils/fuel.stop.builder');
 
 describe('validator', () => {
     let validator;
@@ -48,58 +48,56 @@ describe('fuel stop validator', () => {
 
         expect(result).toBe(false);
     })
+    
+    const fuel_stop_builder = new FuelStopBuilder();
+
     it('fails when fuel stop code is null', () => {
-        const fuel_stop = get_fuel_stop();
-              fuel_stop.code = null;
+        const fuel_stop = fuel_stop_builder.code(null).get();
 
         const result = fuel_stop_validator.validate(fuel_stop);
 
         expect(result).toBe(false);
     })
     it('fails when fuel stop address is null', () => {
-        const fuel_stop = get_fuel_stop();
-              fuel_stop.address = null;
+        const fuel_stop = fuel_stop_builder.address(null).get();
 
         const result = fuel_stop_validator.validate(fuel_stop);
 
         expect(result).toBe(false);
     })
     it('fails when fuel stop city is null', () => {
-        const fuel_stop = get_fuel_stop();
-              fuel_stop.city = null;
+        const fuel_stop = fuel_stop_builder.city(null).get();
 
         const result = fuel_stop_validator.validate(fuel_stop);
 
         expect(result).toBe(false);
     })
     it('fails when fuel stop state is null', () => {
-        const fuel_stop = get_fuel_stop();
-              fuel_stop.state = null;
+        const fuel_stop = fuel_stop_builder.state(null).get();
 
         const result = fuel_stop_validator.validate(fuel_stop);
 
         expect(result).toBe(false);
     })
     it('fails when fuel stop state does not appear in address', () => {
-        const fuel_stop = get_fuel_stop();
-              fuel_stop.address = '0000 N Test Rd, TestCity, XX 00000'
-              fuel_stop.state = 'YY';
+        const fuel_stop = fuel_stop_builder
+                            .address('0000 N Test Rd, TestCity, XX 00000')
+                            .state('YY').get();
 
         const result = fuel_stop_validator.validate(fuel_stop);
 
         expect(result).toBe(false);
     })
     it('fails when fuel stop address has no zip code', () => {
-        const fuel_stop = get_fuel_stop();
-              fuel_stop.address = '0000 N Test Rd, TestCity, XX'
+        const fuel_stop = fuel_stop_builder.address('0000 N Test Rd, TestCity, XX')
+                                           .get();
 
         const result = fuel_stop_validator.validate(fuel_stop);
 
         expect(result).toBe(false);
     })
     it('passes when fuel stop code is recognized', () => {
-        const fuel_stop = get_fuel_stop();
-              fuel_stop.code = 'pilot';
+        const fuel_stop = fuel_stop_builder.code('pilot').get();
 
         const result = fuel_stop_validator.validate(fuel_stop);
 
