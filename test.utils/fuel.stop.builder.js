@@ -1,6 +1,8 @@
+const { getValidFuelStop } = require("./fuel.stop.factory");
+
 class FuelStopBuilder {
     constructor() {
-        this.fuelstop = {};
+        this.fuelstop = getValidFuelStop();
     }
 
     code(value){
@@ -35,14 +37,7 @@ class FuelStopBuilder {
     
     get(){
         const { fuelstop } = this;
-        this.fuelstop = {
-            code: 'petro',
-            display_name: '-',
-            address: '0000 N Test Rd, TestCity, XX 00000',
-            city: '-',
-            state: 'XX',
-            highway: '1'
-        }
+        this.fuelstop = getValidFuelStop();
         return fuelstop;
     }
 }

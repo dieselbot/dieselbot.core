@@ -3,7 +3,7 @@ const {
     collapse, trimAll, get_fuel_stop_id
 } = require("./utils");
  
-const FuelStopBuilder = require('../test.utils/fuel.stop.builder');
+const { getValidFuelStop } = require('../test.utils/fuel.stop.factory');
 
 describe('chop_left string utility', () => {
 
@@ -150,11 +150,9 @@ describe('trimAll function', () => {
 })
 
 describe('get_fuel_stop_id function', () => {
-    
-    const fuel_stop_builder = new FuelStopBuilder();
 
     it('should form hash from fuel stop object', () => {
-        const fuel_stop = fuel_stop_builder.get();
+        const fuel_stop = getValidFuelStop();
 
         const hash = get_fuel_stop_id(fuel_stop);
 
