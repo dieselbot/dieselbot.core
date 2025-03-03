@@ -82,7 +82,8 @@ describe('fuel stop validator', () => {
     it('fails when fuel stop state does not appear in address', () => {
         const fuel_stop = fuel_stop_builder
                             .address('0000 N Test Rd, TestCity, XX 00000')
-                            .state('YY').get();
+                            .state('YY')
+                            .get();
 
         const result = fuel_stop_validator.validate(fuel_stop);
 
